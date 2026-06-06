@@ -66,7 +66,9 @@
                 <!-- Food List Panel -->
                 <div class="border-4 border-[#222] bg-[#0a0a0a] p-6 h-[500px] flex flex-col">
                     <h2 class="text-2xl font-black uppercase tracking-widest title-font bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent mb-6 drop-shadow-sm">Compiling Calories</h2>
-                    <div id="food-list" class="flex-col gap-4 overflow-y-auto pr-2 flex-grow"></div>
+                    
+                    <!-- Categorized Food List Wrapper -->
+                    <div id="food-list" class="flex-col gap-2 overflow-y-auto pr-2 flex-grow relative"></div>
                 </div>
 
                 <!-- Manual Entries Grid -->
@@ -114,11 +116,6 @@
                     </div>
 
                     <div id="exercise-list" class="flex flex-col gap-6 flex-grow"></div>
-
-                    <!-- Cloud Sync Button -->
-                    <button onclick="synchronizeData()" class="w-full bg-[#e5e5e5] text-black font-black uppercase tracking-[0.2em] py-4 mt-8 hover:bg-white transition-colors">
-                        Synchronize Data
-                    </button>
                 </div>
                 
                 <!-- Bottom Row: Steps and Activity Log -->
@@ -167,19 +164,55 @@
 <script>
     // ==========================================
     // ⚙️ BACKEND CONFIGURATION
-    // Replace this URL with your deployed Cloud Run URL when ready.
-    // Example: 'https://health-tracker-api-xxxxxxx.run.app/api'
     // ==========================================
     const API_URL = 'https://health-tracker-api-440498875126.asia-south1.run.app/api'; 
     
-    // Purely in-memory storage. LocalStorage is entirely removed.
     let storage = {}; 
-    
     let activeTab = 'daily';
     let charts = {};
+    let syncTimeout = null; 
 
+    // Food Database with Categories
     const FOOD_DB = [
-        { id: 'f1', name: '3 Egg Omelette', kcal: 210, p: 18 }, { id: 'f2', name: '3 Boiled egg white', kcal: 60, p: 12 }, { id: 'f3', name: '2 Wheat Bread Slices', kcal: 140, p: 7 }, { id: 'f4', name: '1 Spoon Peanut Butter', kcal: 95, p: 3 }, { id: 'f5', name: 'Any Paratha', kcal: 100, p: 4 }, { id: 'f6', name: '2 Plain Dosa', kcal: 100, p: 6 }, { id: 'f7', name: 'Ginger Tea - pre lunch', kcal: 60, p: 3 }, { id: 'f8', name: '2 Roti (Lunch)', kcal: 200, p: 6 }, { id: 'f9', name: 'Paneer Curry (Lunch)', kcal: 200, p: 10 }, { id: 'f10', name: 'Dal (Lunch)', kcal: 150, p: 5 }, { id: 'f11', name: 'Greek Yogurt Cup (Lunch)', kcal: 90, p: 6 }, { id: 'f12', name: 'Ginger Tea (Snacks)', kcal: 60, p: 3 }, { id: 'f13', name: '2 Bananas (Snacks)', kcal: 180, p: 4 }, { id: 'f14', name: '30 Pista (Snacks)', kcal: 100, p: 3 }, { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6 }, { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10 }, { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5 }, { id: 'f18', name: 'Night Shake (1.5 Scoop)', kcal: 500, p: 48 }, { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17 }, { id: 'f20', name: '1 cup rice', kcal: 180, p: 0 }, { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3 }, { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32 }, { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21 }, { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15 }, { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6 }, { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9 }, { id: 'f27', name: 'Chhole Kulcha', kcal: 400, p: 27 }, { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26 }, { id: 'f29', name: 'Grilled Barbeque Chicken Rice Bowl', kcal: 650, p: 30 }, { id: 'f30', name: 'Cookie Monster Sundae', kcal: 900, p: 6 }
+        // BREAKFAST
+        { id: 'f1', name: '3 Egg Omelette', kcal: 210, p: 18, category: 'Breakfast' }, 
+        { id: 'f2', name: '3 Boiled egg white', kcal: 60, p: 12, category: 'Breakfast' }, 
+        { id: 'f3', name: '2 Wheat Bread Slices', kcal: 140, p: 7, category: 'Breakfast' }, 
+        { id: 'f4', name: '1 Spoon Peanut Butter', kcal: 95, p: 3, category: 'Breakfast' }, 
+        { id: 'f5', name: 'Any Paratha', kcal: 100, p: 4, category: 'Breakfast' }, 
+        { id: 'f6', name: '2 Plain Dosa', kcal: 100, p: 6, category: 'Breakfast' }, 
+        { id: 'f7', name: 'Ginger Tea - pre lunch', kcal: 60, p: 3, category: 'Breakfast' }, 
+
+        // LUNCH
+        { id: 'f8', name: '2 Roti (Lunch)', kcal: 200, p: 6, category: 'Lunch' }, 
+        { id: 'f9', name: 'Paneer Curry (Lunch)', kcal: 200, p: 10, category: 'Lunch' }, 
+        { id: 'f10', name: 'Dal (Lunch)', kcal: 150, p: 5, category: 'Lunch' }, 
+        { id: 'f11', name: 'Greek Yogurt Cup (Lunch)', kcal: 90, p: 6, category: 'Lunch' }, 
+        { id: 'f20', name: '1 cup rice', kcal: 180, p: 0, category: 'Lunch' }, 
+        { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6, category: 'Lunch' }, 
+        { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9, category: 'Lunch' }, 
+        { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26, category: 'Lunch' }, 
+
+        // SNACKS
+        { id: 'f12', name: 'Ginger Tea (Snacks)', kcal: 60, p: 3, category: 'Snacks' }, 
+        { id: 'f13', name: '2 Bananas (Snacks)', kcal: 180, p: 4, category: 'Snacks' }, 
+        { id: 'f14', name: '30 Pista (Snacks)', kcal: 100, p: 3, category: 'Snacks' }, 
+
+        // DINNER
+        { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6, category: 'Dinner' }, 
+        { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10, category: 'Dinner' }, 
+        { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5, category: 'Dinner' }, 
+        { id: 'f18', name: 'Night Shake (1.5 Scoop)', kcal: 500, p: 48, category: 'Dinner' }, 
+        { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17, category: 'Dinner' }, 
+        { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21, category: 'Dinner' }, 
+        { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15, category: 'Dinner' }, 
+        
+        // WEEKEND ORDERS
+        { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3, category: 'Weekend Orders' }, 
+        { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32, category: 'Weekend Orders' }, 
+        { id: 'f27', name: 'Chhole Kulcha', kcal: 400, p: 27, category: 'Weekend Orders' }, 
+        { id: 'f29', name: 'Grilled Barbeque Chicken Rice Bowl', kcal: 650, p: 30, category: 'Weekend Orders' }, 
+        { id: 'f30', name: 'Cookie Monster Sundae', kcal: 900, p: 6, category: 'Weekend Orders' }
     ];
 
     const WORKOUT_DB = {
@@ -195,7 +228,6 @@
 
     // INIT: Fetches database state on load
     async function init() {
-        // Populate Dropdown for Analytics
         const selector = document.getElementById('analytics-exercise-selector');
         Object.keys(WORKOUT_DB).forEach(split => {
             if(split !== 'Cardio') {
@@ -207,14 +239,13 @@
             }
         });
 
-        // Set default date
-        document.getElementById('date-picker').value = '2026-06-06';
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date-picker').value = today;
         document.getElementById('date-picker').onchange = (e) => {
             loadData(e.target.value);
             if(activeTab === 'analytics') generateCharts();
         };
 
-        // FETCH FROM MONGODB / CLOUD RUN
         try {
             const response = await fetch(`${API_URL}/logs`);
             if (response.ok) {
@@ -230,19 +261,38 @@
             document.getElementById('db-status-badge').className = "text-red-400";
         }
 
-        loadData('2026-06-06');
+        loadData(today);
     }
 
+    // RENDER CATEGORIZED FOODS
     function renderFoods(savedFoods = []) {
-        document.getElementById('food-list').innerHTML = FOOD_DB.map(f => `
-            <label class="flex items-center gap-4 py-3 border-b border-[#222] cursor-pointer hover:bg-[#111] transition-colors">
-                <input type="checkbox" id="chk-${f.id}" class="custom-chk flex-shrink-0" ${savedFoods.includes(f.id) ? 'checked' : ''} onchange="autoSave()">
-                <div class="flex-grow flex justify-between items-center text-sm">
-                    <span class="font-bold text-gray-200">${f.name}</span>
-                    <span class="mono-font text-[#6b8fd9]">${f.kcal} kcal <span class="text-[#555] mx-1">|</span> <span class="text-[#e5e5e5]">${f.p}g P</span></span>
-                </div>
-            </label>
-        `).join('');
+        const categories = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Weekend Orders'];
+        let html = '';
+
+        categories.forEach(cat => {
+            const foodsInCat = FOOD_DB.filter(f => f.category === cat);
+            if(foodsInCat.length === 0) return;
+
+            html += `
+                <div class="mb-5 first:mt-0">
+                    <h3 class="text-[10px] font-black tracking-widest text-[#6b8fd9] uppercase sticky top-0 bg-[#0a0a0a] py-2 border-b border-[#222] z-10">${cat}</h3>
+                    <div class="flex flex-col mt-2">
+            `;
+
+            html += foodsInCat.map(f => `
+                <label class="flex items-center gap-4 py-2.5 border-b border-[#111] cursor-pointer hover:bg-[#111] transition-colors rounded px-2 -mx-2">
+                    <input type="checkbox" id="chk-${f.id}" class="custom-chk flex-shrink-0" ${savedFoods.includes(f.id) ? 'checked' : ''} onchange="autoSave()">
+                    <div class="flex-grow flex justify-between items-center text-sm">
+                        <span class="font-bold text-gray-300">${f.name}</span>
+                        <span class="mono-font text-xs text-[#555]">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1">|</span> <span class="text-[#e5e5e5]">${f.p}g</span></span>
+                    </div>
+                </label>
+            `).join('');
+
+            html += `</div></div>`;
+        });
+
+        document.getElementById('food-list').innerHTML = html;
     }
 
     function renderExercises() {
@@ -278,7 +328,7 @@
         updateMetrics(); 
     }
 
-    // AUTOSAVE: Only updates local memory. Does NOT write to disk/DB to prevent lag.
+    // AUTOSAVE: Updates local memory instantly, then triggers a debounced cloud sync
     function autoSave() {
         const date = document.getElementById('date-picker').value;
         const split = document.getElementById('split-selector').value;
@@ -307,18 +357,31 @@
             kcal: document.getElementById('cardio-kcal') ? document.getElementById('cardio-kcal').value : existingData.cardio?.kcal || ''
         };
 
-        // Write directly to variable, no local storage.
         storage[date] = { split, foods: selectedFoods, sets: updatedSets, water, steps, junkKcal, junkProtein, cardio };
         updateMetrics();
+
+        clearTimeout(syncTimeout); 
+        
+        const badge = document.getElementById('db-status-badge');
+        if(badge) {
+            badge.innerText = "Typing...";
+            badge.className = "text-yellow-400";
+        }
+
+        syncTimeout = setTimeout(() => {
+            synchronizeData();
+        }, 1500);
     }
 
-    // SYNC: Pushes current day's memory up to MongoDB
+    // SYNC: Pushes data silently in the background
     async function synchronizeData() {
-        autoSave(); // grab latest inputs
-        
         const date = document.getElementById('date-picker').value;
-        const btn = document.querySelector('button[onclick="synchronizeData()"]');
-        btn.innerText = 'SYNCING TO CLOUD...';
+        const badge = document.getElementById('db-status-badge');
+        
+        if(badge) {
+            badge.innerText = 'Syncing to Cloud...';
+            badge.className = 'text-yellow-400';
+        }
         
         try {
             const response = await fetch(`${API_URL}/log`, {
@@ -328,21 +391,20 @@
             });
 
             if (response.ok) {
-                btn.innerText = 'DATA SYNCHRONIZED ✓';
-                btn.classList.add('bg-white', 'text-black');
+                if(badge) {
+                    badge.innerText = 'All changes saved ✓';
+                    badge.className = 'text-green-400';
+                }
             } else {
                 throw new Error('Sync returned non-200 status');
             }
         } catch (error) {
-            console.error(error);
-            btn.innerText = 'SYNC FAILED ❌';
-            btn.classList.add('bg-red-500', 'text-white');
+            console.error("Auto-sync failed:", error);
+            if(badge) {
+                badge.innerText = 'Sync Failed ❌';
+                badge.className = 'text-red-500';
+            }
         }
-
-        setTimeout(() => {
-            btn.innerText = 'SYNCHRONIZE DATA';
-            btn.classList.remove('bg-white', 'bg-red-500', 'text-white');
-        }, 2000);
     }
 
     function updateMetrics() {
