@@ -37,35 +37,35 @@
         .tab-inactive { color: var(--text-muted); border: 2px solid transparent; }
     </style>
 </head>
-<body class="p-8 min-h-screen flex flex-col items-center">
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center overflow-x-hidden">
     
     <div class="w-full max-w-[1400px]">
         <!-- HEADER -->
-        <header class="flex justify-between items-end border-b border-heavy pb-6 mb-8 border-[#222]">
-            <div>
-                <h1 class="text-5xl font-black tracking-tight mb-2 title-font bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Health Tracker</h1>
-                <p class="text-[11px] tracking-[0.3em] text-gray-400 font-bold uppercase">Body Composition & Performance Analytics</p>
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end border-b border-heavy pb-6 mb-6 md:mb-8 border-[#222] gap-6 lg:gap-0">
+            <div class="w-full lg:w-auto">
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 title-font bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Health Tracker</h1>
+                <p class="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.3em] text-gray-400 font-bold uppercase">Body Composition & Performance Analytics</p>
             </div>
             
-            <div class="flex items-center gap-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
                 <!-- Navigation Tabs -->
-                <div class="flex gap-2">
-                    <button id="btn-daily" onclick="switchTab('daily')" class="tab-active px-6 py-2 text-sm font-bold bg-[#1a1a1a]">Daily Log</button>
-                    <button id="btn-analytics" onclick="switchTab('analytics')" class="tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors">Analytics Report</button>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button id="btn-daily" onclick="switchTab('daily')" class="flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]">Daily Log</button>
+                    <button id="btn-analytics" onclick="switchTab('analytics')" class="flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors">Analytics</button>
                 </div>
                 
-                <input type="date" id="date-picker" style="color-scheme: dark;" class="bg-black border-4 border-white p-2 text-sm font-bold mono-font text-white uppercase outline-none focus:border-gray-300 cursor-pointer">
+                <input type="date" id="date-picker" style="color-scheme: dark;" class="w-full sm:w-auto bg-black border-4 border-white p-2 text-sm font-bold mono-font text-white uppercase outline-none focus:border-gray-300 cursor-pointer">
             </div>
         </header>
 
         <!-- MAIN CONTENT: DAILY LOG -->
-        <div id="view-daily" class="grid grid-cols-12 gap-6">
+        <div id="view-daily" class="flex flex-col lg:grid lg:grid-cols-12 gap-6">
             
             <!-- LEFT COLUMN (Nutrition & Hydration) -->
-            <div class="col-span-5 flex flex-col gap-6">
+            <div class="lg:col-span-5 flex flex-col gap-6 w-full">
                 <!-- Food List Panel -->
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6 h-[500px] flex flex-col">
-                    <h2 class="text-lg font-bold tracking-widest mono-font text-[#34d399] mb-6 drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col">
+                    <h2 class="text-base md:text-lg font-bold tracking-widest mono-font text-[#34d399] mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(52,211,153,0.4)] break-all">
                         <span class="text-[#555]">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse text-white">_</span>
                     </h2>
                     
@@ -74,40 +74,40 @@
                 </div>
 
                 <!-- Manual Entries Grid -->
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#34d399] uppercase mb-2 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]">&gt;&nbsp;SYS.WEIGHT</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#34d399] uppercase mb-2 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]">&gt;&nbsp;SYS.WEIGHT</p>
                         <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#60a5fa] uppercase mb-2 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]">&gt;&nbsp;HYDRATION</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#60a5fa] uppercase mb-2 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]">&gt;&nbsp;HYDRATION</p>
                         <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#fb7185] uppercase mb-2 drop-shadow-[0_0_5px_rgba(251,113,133,0.6)]">&gt;&nbsp;ERR_KCAL</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#fb7185] uppercase mb-2 drop-shadow-[0_0_5px_rgba(251,113,133,0.6)]">&gt;&nbsp;ERR_KCAL</p>
                         <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#c084fc] uppercase mb-2 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]">&gt;&nbsp;ERR_PRO</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#c084fc] uppercase mb-2 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]">&gt;&nbsp;ERR_PRO</p>
                         <input type="number" id="junk-protein" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                 </div>
                 
                 <!-- Left Metrics Bottom -->
-                <div id="metrics-log" class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24"></div>
+                <div id="metrics-log" class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-auto md:h-24"></div>
             </div>
 
             <!-- RIGHT COLUMN (Workout & Steps) -->
-            <div class="col-span-7 flex flex-col gap-6">
+            <div class="lg:col-span-7 flex flex-col gap-6 w-full">
                 <!-- Workout Panel -->
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-8 flex flex-col min-h-[630px] relative">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative">
                     
-                    <div class="flex justify-between items-start mb-8 border-b border-[#222] pb-6">
-                        <h2 class="text-lg font-bold tracking-widest mono-font text-[#6b8fd9] drop-shadow-[0_0_8px_rgba(107,143,217,0.4)] mt-1">
-                            <span class="text-[#555]">root@sys:~#</span> ./exec_strength_protocol.sh<span class="animate-pulse text-white">_</span>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b border-[#222] pb-4 md:pb-6 gap-4 sm:gap-0">
+                        <h2 class="text-base md:text-lg font-bold tracking-widest mono-font text-[#6b8fd9] drop-shadow-[0_0_8px_rgba(107,143,217,0.4)] mt-1 break-all">
+                            <span class="text-[#555]">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse text-white">_</span>
                         </h2>
-                        <div class="relative">
-                            <select id="split-selector" class="appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-[#111]" onchange="renderExercises()">
+                        <div class="relative w-full sm:w-auto">
+                            <select id="split-selector" class="w-full sm:w-auto appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-[#111]" onchange="renderExercises()">
                                 <option value="Chest">Chest</option>
                                 <option value="Abs">Abs</option>
                                 <option value="Biceps">Biceps</option>
@@ -127,42 +127,42 @@
                 </div>
                 
                 <!-- Bottom Row: Steps and Activity Log -->
-                <div class="flex gap-6">
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24 w-1/3 flex flex-col justify-between">
+                <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full">
+                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24 w-full sm:w-1/3 flex flex-col justify-between">
                         <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#fbbf24] uppercase mb-1 drop-shadow-[0_0_5px_rgba(251,191,36,0.6)]">&gt;&nbsp;SYS.STEPS</p>
                         <input type="number" id="steps-in" placeholder="0" class="w-full bg-black border-2 border-white text-white text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
-                    <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-2/3"></div>
+                    <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-full sm:w-2/3"></div>
                 </div>
             </div>
         </div>
 
         <!-- MAIN CONTENT: ANALYTICS -->
-        <div id="view-analytics" class="hidden flex-col gap-6">
+        <div id="view-analytics" class="hidden flex-col gap-6 w-full">
             
-            <div class="flex justify-between items-center bg-[#0a0a0a] border-4 border-[#222] p-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#0a0a0a] border-4 border-[#222] p-4 gap-4 sm:gap-0">
                 <p class="text-xs tracking-widest uppercase font-bold text-gray-400">Database Status: <span id="db-status-badge" class="text-yellow-400">Loading Cloud Data...</span></p>
-                <button class="bg-[#1a1a1a] border-2 border-white text-white text-xs font-bold uppercase tracking-wider px-4 py-2 opacity-50 cursor-not-allowed">Auto-Fetching...</button>
+                <button class="w-full sm:w-auto bg-[#1a1a1a] border-2 border-white text-white text-xs font-bold uppercase tracking-wider px-4 py-2 opacity-50 cursor-not-allowed">Auto-Fetching...</button>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-energy"></canvas></div>
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-protein"></canvas></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-energy"></canvas></div>
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-protein"></canvas></div>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-water"></canvas></div>
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-steps"></canvas></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-water"></canvas></div>
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-steps"></canvas></div>
             </div>
 
-            <div class="border-4 border-[#222] bg-[#0a0a0a] p-6">
-                <div class="flex justify-between items-center mb-4 border-b border-[#222] pb-4">
-                    <h3 class="mono-font text-sm font-bold tracking-widest uppercase text-[#e5e5e5] drop-shadow-[0_0_5px_rgba(255,255,255,0.4)]">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
-                    <select id="analytics-exercise-selector" class="bg-black border-2 border-white text-white px-2 py-1 font-mono text-xs outline-none" onchange="renderWorkoutChart()">
+            <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#222] pb-4 gap-4 sm:gap-0">
+                    <h3 class="mono-font text-xs md:text-sm font-bold tracking-widest uppercase text-[#e5e5e5] drop-shadow-[0_0_5px_rgba(255,255,255,0.4)] break-all">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
+                    <select id="analytics-exercise-selector" class="w-full sm:w-auto bg-black border-2 border-white text-white px-2 py-1 font-mono text-xs outline-none" onchange="renderWorkoutChart()">
                         <!-- Options populated by JS -->
                     </select>
                 </div>
-                <div class="h-[300px]"><canvas id="chart-workout"></canvas></div>
+                <div class="h-[250px] md:h-[300px] w-full relative"><canvas id="chart-workout"></canvas></div>
             </div>
 
         </div>
@@ -306,7 +306,7 @@
                     <input type="checkbox" id="chk-${f.id}" class="custom-chk flex-shrink-0" ${savedFoods.includes(f.id) ? 'checked' : ''} onchange="autoSave()">
                     <div class="flex-grow flex justify-between items-center text-sm">
                         <span class="font-bold text-gray-300">${f.name}</span>
-                        <span class="mono-font text-xs text-[#555]">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1">|</span> <span class="text-[#e5e5e5]">${f.p}g</span></span>
+                        <span class="mono-font text-xs text-[#555]">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1 hidden sm:inline">|</span> <span class="text-[#e5e5e5] hidden sm:inline">${f.p}g</span></span>
                     </div>
                 </label>
             `).join('');
@@ -324,25 +324,25 @@
 
         if (split === 'Cardio') {
             document.getElementById('exercise-list').innerHTML = `
-                <div class="flex justify-between items-center border-b border-[#222] pb-4">
-                    <span class="mono-font text-sm font-bold text-white w-1/4">Treadmill/Mix</span>
-                    <div class="flex gap-2 w-3/4 justify-end">
-                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#222] pb-4 gap-3 sm:gap-0">
+                    <span class="mono-font text-sm font-bold text-white w-full sm:w-1/4">Treadmill/Mix</span>
+                    <div class="grid grid-cols-4 gap-2 w-full sm:w-3/4 sm:flex sm:justify-end">
+                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
                     </div>
                 </div>
             `;
         } else {
             const exercises = WORKOUT_DB[split];
             document.getElementById('exercise-list').innerHTML = exercises.map(ex => `
-                <div class="flex justify-between items-center border-b border-[#222] pb-4">
-                    <span class="mono-font text-sm font-bold text-white truncate pr-2">${ex}</span>
-                    <div class="flex gap-4">
-                        <input type="text" id="${ex}-s1" placeholder="S1" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s2" placeholder="S2" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s3" placeholder="S3" class="w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="autoSave()">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#222] pb-4 gap-3 sm:gap-0">
+                    <span class="mono-font text-sm font-bold text-white truncate pr-2 w-full sm:w-auto">${ex}</span>
+                    <div class="grid grid-cols-3 gap-2 w-full sm:w-auto sm:flex sm:gap-4">
+                        <input type="text" id="${ex}-s1" placeholder="S1" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="autoSave()">
+                        <input type="text" id="${ex}-s2" placeholder="S2" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="autoSave()">
+                        <input type="text" id="${ex}-s3" placeholder="S3" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="autoSave()">
                     </div>
                 </div>
             `).join('');
@@ -445,14 +445,14 @@
         });
 
         document.getElementById('metrics-log').innerHTML = `
-            <div class="flex justify-between items-center h-full">
+            <div class="flex flex-row justify-between items-center h-full">
                 <div>
-                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#34d399] uppercase mb-1 drop-shadow-[0_0_5px_rgba(52,211,153,0.4)]">&gt;&nbsp;CALORIES_IN</p>
-                    <p class="text-2xl font-black mono-font text-white">${totalKcal} <span class="text-xs text-[#6b8fd9]">kcal</span></p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#34d399] uppercase mb-1 drop-shadow-[0_0_5px_rgba(52,211,153,0.4)]">&gt;&nbsp;KCAL_IN</p>
+                    <p class="text-xl md:text-2xl font-black mono-font text-white">${totalKcal} <span class="text-[10px] md:text-xs text-[#6b8fd9]">kcal</span></p>
                 </div>
                 <div class="text-right">
-                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#60a5fa] uppercase mb-1 drop-shadow-[0_0_5px_rgba(96,165,250,0.4)]">PROTEIN_IN&nbsp;&lt;</p>
-                    <p class="text-2xl font-black mono-font text-white">${totalProtein} <span class="text-xs text-[#6b8fd9]">g</span></p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#60a5fa] uppercase mb-1 drop-shadow-[0_0_5px_rgba(96,165,250,0.4)]">PRO_IN&nbsp;&lt;</p>
+                    <p class="text-xl md:text-2xl font-black mono-font text-white">${totalProtein} <span class="text-[10px] md:text-xs text-[#6b8fd9]">g</span></p>
                 </div>
             </div>
         `;
@@ -472,12 +472,12 @@
         const caloriesOut = Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + stepBurn);
 
         document.getElementById('activity-log').innerHTML = `
-            <div class="flex justify-between items-center h-full">
+            <div class="flex flex-row justify-between items-center h-full">
                 <div>
-                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#a855f7] uppercase mb-1 drop-shadow-[0_0_5px_rgba(168,85,247,0.4)]">&gt;&nbsp;NET_EXPENDITURE</p>
-                    <p class="text-[10px] text-gray-400 font-bold tracking-wider">Base BMR: <span class="text-[#6b8fd9]">${bmr}</span> kcal</p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#a855f7] uppercase mb-1 drop-shadow-[0_0_5px_rgba(168,85,247,0.4)]">&gt;&nbsp;EXPENDITURE</p>
+                    <p class="text-[9px] md:text-[10px] text-gray-400 font-bold tracking-wider">Base BMR: <span class="text-[#6b8fd9]">${bmr}</span></p>
                 </div>
-                <p class="text-2xl font-black mono-font text-white">${caloriesOut} <span class="text-xs text-[#6b8fd9]">kcal</span></p>
+                <p class="text-xl md:text-2xl font-black mono-font text-white">${caloriesOut} <span class="text-[10px] md:text-xs text-[#6b8fd9]">kcal</span></p>
             </div>
         `;
     }
@@ -506,15 +506,15 @@
             document.getElementById('view-analytics').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('flex');
             
-            document.getElementById('btn-daily').className = 'tab-active px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
-            document.getElementById('btn-analytics').className = 'tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors';
         } else {
             document.getElementById('view-daily').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('hidden');
             document.getElementById('view-analytics').classList.add('flex');
             
-            document.getElementById('btn-analytics').className = 'tab-active px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
-            document.getElementById('btn-daily').className = 'tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors';
             
             generateCharts();
         }
@@ -527,6 +527,7 @@
         Chart.defaults.color = '#888888';
         Chart.defaults.font.family = "'JetBrains Mono', monospace";
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
+        Chart.defaults.maintainAspectRatio = false; // Important for responsive charts
 
         const selectedDateStr = document.getElementById('date-picker').value;
         const parts = selectedDateStr.split('-');
@@ -568,6 +569,8 @@
             stepsData.push(stepCount);
         }
 
+        // Add container height manually via JS to canvas wrappers if they squish, but relying on relative wrapper in HTML is cleaner.
+        
         charts.energy = new Chart(document.getElementById('chart-energy'), { 
             type: 'bar', 
             data: { labels: dates, datasets: [{ label: 'Kcal In', data: kcalIn, backgroundColor: '#e5e5e5' }, { label: 'Kcal Out', data: kcalOut, backgroundColor: '#333333' }, { label: 'Threshold (2500)', data: Array(7).fill(2500), type: 'line', borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
