@@ -62,27 +62,33 @@
         <div id="view-daily" class="grid grid-cols-12 gap-6">
             
             <!-- LEFT COLUMN (Nutrition & Hydration) -->
-            <div class="col-span-4 flex flex-col gap-6">
+            <div class="col-span-5 flex flex-col gap-6">
                 <!-- Food List Panel -->
                 <div class="border-4 border-[#222] bg-[#0a0a0a] p-6 h-[500px] flex flex-col">
-                    <h2 class="text-2xl font-black uppercase tracking-widest title-font bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent mb-6 drop-shadow-sm">Compiling Calories</h2>
+                    <h2 class="text-lg font-bold tracking-widest mono-font text-[#34d399] mb-6 drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]">
+                        <span class="text-[#555]">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse text-white">_</span>
+                    </h2>
                     
                     <!-- Categorized Food List Wrapper -->
                     <div id="food-list" class="flex-col gap-2 overflow-y-auto pr-2 flex-grow relative"></div>
                 </div>
 
                 <!-- Manual Entries Grid -->
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-4 gap-4">
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="text-[10px] font-black tracking-widest text-blue-300 opacity-80 uppercase mb-2">Water (L)</p>
-                        <input type="number" id="water-in" step="0.1" placeholder="0.0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#34d399] uppercase mb-2 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]">&gt;&nbsp;SYS.WEIGHT</p>
+                        <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="text-[10px] font-black tracking-widest text-rose-300 opacity-80 uppercase mb-2">Junk Kcal</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#60a5fa] uppercase mb-2 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]">&gt;&nbsp;HYDRATION</p>
+                        <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    </div>
+                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#fb7185] uppercase mb-2 drop-shadow-[0_0_5px_rgba(251,113,133,0.6)]">&gt;&nbsp;ERR_KCAL</p>
                         <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="text-[10px] font-black tracking-widest text-rose-300 opacity-80 uppercase mb-2">Junk Pro</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#c084fc] uppercase mb-2 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]">&gt;&nbsp;ERR_PRO</p>
                         <input type="number" id="junk-protein" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                 </div>
@@ -92,14 +98,16 @@
             </div>
 
             <!-- RIGHT COLUMN (Workout & Steps) -->
-            <div class="col-span-8 flex flex-col gap-6">
+            <div class="col-span-7 flex flex-col gap-6">
                 <!-- Workout Panel -->
                 <div class="border-4 border-[#222] bg-[#0a0a0a] p-8 flex flex-col min-h-[630px] relative">
                     
-                    <div class="flex justify-between items-start mb-12">
-                        <h2 class="text-2xl font-black uppercase tracking-widest title-font bg-gradient-to-r from-[#6b8fd9] to-purple-400 bg-clip-text text-transparent mt-1 drop-shadow-sm">Building muscles ...... Testing Strength</h2>
+                    <div class="flex justify-between items-start mb-8 border-b border-[#222] pb-6">
+                        <h2 class="text-lg font-bold tracking-widest mono-font text-[#6b8fd9] drop-shadow-[0_0_8px_rgba(107,143,217,0.4)] mt-1">
+                            <span class="text-[#555]">root@sys:~#</span> ./exec_strength_protocol.sh<span class="animate-pulse text-white">_</span>
+                        </h2>
                         <div class="relative">
-                            <select id="split-selector" class="appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer" onchange="renderExercises()">
+                            <select id="split-selector" class="appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-[#111]" onchange="renderExercises()">
                                 <option value="Chest">Chest</option>
                                 <option value="Abs">Abs</option>
                                 <option value="Biceps">Biceps</option>
@@ -121,7 +129,7 @@
                 <!-- Bottom Row: Steps and Activity Log -->
                 <div class="flex gap-6">
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24 w-1/3 flex flex-col justify-between">
-                        <p class="text-[9px] font-mono tracking-widest text-[#6b8fd9] uppercase mb-1">STEPS_COUNT</p>
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#fbbf24] uppercase mb-1 drop-shadow-[0_0_5px_rgba(251,191,36,0.6)]">&gt;&nbsp;SYS.STEPS</p>
                         <input type="number" id="steps-in" placeholder="0" class="w-full bg-black border-2 border-white text-white text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
                     <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-2/3"></div>
@@ -148,8 +156,8 @@
             </div>
 
             <div class="border-4 border-[#222] bg-[#0a0a0a] p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-sm font-black tracking-widest uppercase text-white">Strength Progression (14-Day)</h3>
+                <div class="flex justify-between items-center mb-4 border-b border-[#222] pb-4">
+                    <h3 class="mono-font text-sm font-bold tracking-widest uppercase text-[#e5e5e5] drop-shadow-[0_0_5px_rgba(255,255,255,0.4)]">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
                     <select id="analytics-exercise-selector" class="bg-black border-2 border-white text-white px-2 py-1 font-mono text-xs outline-none" onchange="renderWorkoutChart()">
                         <!-- Options populated by JS -->
                     </select>
@@ -172,6 +180,10 @@
     let charts = {};
     let syncTimeout = null; 
 
+    // Constants for BMR Calculation
+    const USER_HEIGHT_CM = 185;
+    const USER_AGE = 24; 
+
     // Food Database with Categories
     const FOOD_DB = [
         // BREAKFAST
@@ -189,9 +201,6 @@
         { id: 'f10', name: 'Dal (Lunch)', kcal: 150, p: 5, category: 'Lunch' }, 
         { id: 'f11', name: 'Greek Yogurt Cup (Lunch)', kcal: 90, p: 6, category: 'Lunch' }, 
         { id: 'f20', name: '1 cup rice', kcal: 180, p: 0, category: 'Lunch' }, 
-        { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6, category: 'Lunch' }, 
-        { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9, category: 'Lunch' }, 
-        { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26, category: 'Lunch' }, 
 
         // SNACKS
         { id: 'f12', name: 'Ginger Tea (Snacks)', kcal: 60, p: 3, category: 'Snacks' }, 
@@ -202,15 +211,18 @@
         { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6, category: 'Dinner' }, 
         { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10, category: 'Dinner' }, 
         { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5, category: 'Dinner' }, 
-        { id: 'f18', name: 'Night Shake (1.5 Scoop)', kcal: 500, p: 48, category: 'Dinner' }, 
-        { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17, category: 'Dinner' }, 
-        { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21, category: 'Dinner' }, 
-        { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15, category: 'Dinner' }, 
+        { id: 'f18', name: 'Protein Shake', kcal: 500, p: 48, category: 'Dinner' }, 
         
         // WEEKEND ORDERS
+        { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17, category: 'Weekend Orders' }, 
         { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3, category: 'Weekend Orders' }, 
         { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32, category: 'Weekend Orders' }, 
+        { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21, category: 'Weekend Orders' }, 
+        { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15, category: 'Weekend Orders' }, 
+        { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6, category: 'Weekend Orders' }, 
+        { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9, category: 'Weekend Orders' }, 
         { id: 'f27', name: 'Chhole Kulcha', kcal: 400, p: 27, category: 'Weekend Orders' }, 
+        { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26, category: 'Weekend Orders' }, 
         { id: 'f29', name: 'Grilled Barbeque Chicken Rice Bowl', kcal: 650, p: 30, category: 'Weekend Orders' }, 
         { id: 'f30', name: 'Cookie Monster Sundae', kcal: 900, p: 6, category: 'Weekend Orders' }
     ];
@@ -225,6 +237,16 @@
         "Leg": ['Squats', 'Leg Press', 'Calf Raises', 'Leg Extensions', 'Hamstring Curl', 'Lunges'],
         "Cardio": [] 
     };
+
+    // Helper: Finds the most recently entered weight before or on the current date
+    function getRecentWeight(targetDate) {
+        if (storage[targetDate] && storage[targetDate].weight) return storage[targetDate].weight;
+        const dates = Object.keys(storage).filter(k => k < targetDate).sort().reverse();
+        for (let d of dates) {
+            if (storage[d].weight) return storage[d].weight;
+        }
+        return ''; 
+    }
 
     // INIT: Fetches database state on load
     async function init() {
@@ -335,6 +357,7 @@
         const existingData = storage[date] || { sets: {}, cardio: {} };
         
         const selectedFoods = FOOD_DB.filter(f => document.getElementById(`chk-${f.id}`)?.checked).map(f => f.id);
+        const weight = document.getElementById('weight-in').value;
         const water = document.getElementById('water-in').value;
         const steps = document.getElementById('steps-in').value;
         const junkKcal = document.getElementById('junk-kcal').value;
@@ -357,7 +380,7 @@
             kcal: document.getElementById('cardio-kcal') ? document.getElementById('cardio-kcal').value : existingData.cardio?.kcal || ''
         };
 
-        storage[date] = { split, foods: selectedFoods, sets: updatedSets, water, steps, junkKcal, junkProtein, cardio };
+        storage[date] = { split, foods: selectedFoods, sets: updatedSets, weight, water, steps, junkKcal, junkProtein, cardio };
         updateMetrics();
 
         clearTimeout(syncTimeout); 
@@ -424,11 +447,11 @@
         document.getElementById('metrics-log').innerHTML = `
             <div class="flex justify-between items-center h-full">
                 <div>
-                    <p class="text-[10px] font-black tracking-widest text-[#555] uppercase mb-1">Calories In</p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#34d399] uppercase mb-1 drop-shadow-[0_0_5px_rgba(52,211,153,0.4)]">&gt;&nbsp;CALORIES_IN</p>
                     <p class="text-2xl font-black mono-font text-white">${totalKcal} <span class="text-xs text-[#6b8fd9]">kcal</span></p>
                 </div>
                 <div class="text-right">
-                    <p class="text-[10px] font-black tracking-widest text-[#555] uppercase mb-1">Protein In</p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#60a5fa] uppercase mb-1 drop-shadow-[0_0_5px_rgba(96,165,250,0.4)]">PROTEIN_IN&nbsp;&lt;</p>
                     <p class="text-2xl font-black mono-font text-white">${totalProtein} <span class="text-xs text-[#6b8fd9]">g</span></p>
                 </div>
             </div>
@@ -441,13 +464,18 @@
         let stepsCount = parseInt(document.getElementById('steps-in').value) || 0;
         let stepBurn = stepsCount * 0.04; 
 
-        const caloriesOut = Math.round(1658 + (workoutActive ? 350 : 0) + cardioBurn + stepBurn);
+        // Dynamic BMR Calculation via Mifflin-St Jeor Equation
+        let currentWeight = parseFloat(document.getElementById('weight-in').value);
+        if (isNaN(currentWeight) || currentWeight === 0) currentWeight = 75; // Safe fallback to avoid breaking math
+        
+        const bmr = Math.round((10 * currentWeight) + (6.25 * USER_HEIGHT_CM) - (5 * USER_AGE) + 5);
+        const caloriesOut = Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + stepBurn);
 
         document.getElementById('activity-log').innerHTML = `
             <div class="flex justify-between items-center h-full">
                 <div>
-                    <p class="text-[9px] font-mono tracking-widest text-[#555] uppercase mb-1">ENERGY_EXPENDITURE</p>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">Calories Burnt</p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#a855f7] uppercase mb-1 drop-shadow-[0_0_5px_rgba(168,85,247,0.4)]">&gt;&nbsp;NET_EXPENDITURE</p>
+                    <p class="text-[10px] text-gray-400 font-bold tracking-wider">Base BMR: <span class="text-[#6b8fd9]">${bmr}</span> kcal</p>
                 </div>
                 <p class="text-2xl font-black mono-font text-white">${caloriesOut} <span class="text-xs text-[#6b8fd9]">kcal</span></p>
             </div>
@@ -455,8 +483,13 @@
     }
 
     function loadData(date) {
-        const d = storage[date] || { split: 'Chest', foods: [], sets: {}, water: '', steps: '', junkKcal: '', junkProtein: '', cardio: {} };
+        const d = storage[date] || { split: 'Chest', foods: [], sets: {}, weight: '', water: '', steps: '', junkKcal: '', junkProtein: '', cardio: {} };
+        
         document.getElementById('split-selector').value = d.split || 'Chest';
+        
+        // Load weight from today, or carry forward from the most recent historical entry
+        document.getElementById('weight-in').value = d.weight || getRecentWeight(date);
+        
         document.getElementById('water-in').value = d.water || '';
         document.getElementById('steps-in').value = d.steps || '';
         document.getElementById('junk-kcal').value = d.junkKcal || '';
@@ -509,7 +542,7 @@
             const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             dates.push(`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`); 
 
-            const dayData = storage[dateStr] || { foods: [], sets: {}, cardio: {}, steps: 0, water: 0, junkKcal: 0, junkProtein: 0 };
+            const dayData = storage[dateStr] || { foods: [], sets: {}, cardio: {}, weight: '', steps: 0, water: 0, junkKcal: 0, junkProtein: 0 };
             
             let kIn = parseInt(dayData.junkKcal) || 0;
             let pIn = parseInt(dayData.junkProtein) || 0;
@@ -525,7 +558,11 @@
             let workoutActive = dayData.sets && Object.values(dayData.sets).some(val => val !== '');
             let cardioBurn = parseInt(dayData.cardio?.kcal) || 0;
             let stepCount = parseInt(dayData.steps) || 0;
-            kcalOut.push(Math.round(1658 + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04)));
+            
+            // Reconstruct historical BMR
+            let dayWeight = parseFloat(dayData.weight) || parseFloat(getRecentWeight(dateStr)) || 75;
+            let bmr = Math.round((10 * dayWeight) + (6.25 * USER_HEIGHT_CM) - (5 * USER_AGE) + 5);
+            kcalOut.push(Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04)));
 
             waterData.push(parseFloat(dayData.water) || 0);
             stepsData.push(stepCount);
