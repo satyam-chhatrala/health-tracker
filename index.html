@@ -10,51 +10,51 @@
     
     <style>
         :root { 
-            --bg-deep: #050505; 
-            --bg-panel: #0f0f0f; 
-            --border-heavy: #222222; 
-            --border-light: #e5e5e5;
-            --text-main: #f5f5f5; 
-            --text-muted: #888888;
-            --text-accent: #6b8fd9;
+            --bg-deep: #f3f4f6; 
+            --bg-panel: #ffffff; 
+            --border-heavy: #000000; 
+            --border-light: #e5e7eb;
+            --text-main: #111827; 
+            --text-muted: #6b7280;
+            --text-accent: #2563eb;
         }
         
         body { background-color: var(--bg-deep); color: var(--text-main); font-family: 'Inter', sans-serif; }
         .mono-font { font-family: 'JetBrains Mono', monospace; }
         .title-font { font-family: 'Outfit', sans-serif; }
         
-        /* Custom Checkbox */
-        .custom-chk { appearance: none; width: 20px; height: 20px; background-color: transparent; border: 2px solid white; cursor: pointer; display: grid; place-content: center; }
-        .custom-chk::before { content: ""; width: 10px; height: 10px; transform: scale(0); background-color: black; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
-        .custom-chk:checked { background-color: white; }
+        /* Custom Checkbox Light Theme */
+        .custom-chk { appearance: none; width: 20px; height: 20px; background-color: white; border: 2px solid black; cursor: pointer; display: grid; place-content: center; transition: all 0.1s;}
+        .custom-chk::before { content: ""; width: 10px; height: 10px; transform: scale(0); background-color: white; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
+        .custom-chk:checked { background-color: black; }
         .custom-chk:checked::before { transform: scale(1); }
 
         ::-webkit-scrollbar { width: 6px; } 
         ::-webkit-scrollbar-thumb { background: var(--border-heavy); }
-        ::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        ::-webkit-calendar-picker-indicator { cursor: pointer; } /* Removed invert for light mode */
 
-        .tab-active { border: 2px solid white; color: white; }
-        .tab-inactive { color: var(--text-muted); border: 2px solid transparent; }
+        .tab-active { border: 2px solid black; color: white; background-color: black; }
+        .tab-inactive { color: #4b5563; border: 2px solid transparent; background-color: #e5e7eb; }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center overflow-x-hidden">
     
     <div class="w-full max-w-[1400px]">
         <!-- HEADER -->
-        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end border-b border-heavy pb-6 mb-6 md:mb-8 border-[#222] gap-6 lg:gap-0">
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end border-b-4 pb-6 mb-6 md:mb-8 border-black gap-6 lg:gap-0">
             <div class="w-full lg:w-auto">
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 title-font bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Health Tracker</h1>
-                <p class="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.3em] text-gray-400 font-bold uppercase">Body Composition & Performance Analytics</p>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 title-font bg-gradient-to-r from-black to-gray-600 bg-clip-text text-transparent">Health Tracker</h1>
+                <p class="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.3em] text-gray-500 font-bold uppercase">Body Composition & Performance Analytics</p>
             </div>
             
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
                 <!-- Navigation Tabs -->
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <button id="btn-daily" onclick="switchTab('daily')" class="flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]">Daily Log</button>
-                    <button id="btn-analytics" onclick="switchTab('analytics')" class="flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors">Analytics</button>
+                    <button id="btn-daily" onclick="switchTab('daily')" class="flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold transition-colors">Daily Log</button>
+                    <button id="btn-analytics" onclick="switchTab('analytics')" class="flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-black hover:bg-gray-300 transition-colors">Analytics</button>
                 </div>
                 
-                <input type="date" id="date-picker" style="color-scheme: dark;" class="w-full sm:w-auto bg-black border-4 border-white p-2 text-sm font-bold mono-font text-white uppercase outline-none focus:border-gray-300 cursor-pointer">
+                <input type="date" id="date-picker" style="color-scheme: light;" class="w-full sm:w-auto bg-white border-4 border-black p-2 text-sm font-bold mono-font text-black uppercase outline-none focus:border-blue-600 cursor-pointer shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
         </header>
 
@@ -64,9 +64,9 @@
             <!-- LEFT COLUMN (Nutrition & Hydration) -->
             <div class="lg:col-span-5 flex flex-col gap-6 w-full">
                 <!-- Food List Panel -->
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col">
-                    <h2 class="text-base md:text-lg font-bold tracking-widest mono-font text-[#34d399] mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(52,211,153,0.4)] break-all">
-                        <span class="text-[#555]">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse text-white">_</span>
+                <div class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 pb-2 border-b-2 border-black break-all whitespace-nowrap overflow-hidden text-ellipsis">
+                        <span class="text-gray-500">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse">_</span>
                     </h2>
                     
                     <!-- Categorized Food List Wrapper -->
@@ -75,39 +75,39 @@
 
                 <!-- Manual Entries Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#34d399] uppercase mb-2 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]">&gt;&nbsp;SYS.WEIGHT</p>
-                        <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-green-700 uppercase mb-2">&gt;&nbsp;SYS.WEIGHT</p>
+                        <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#60a5fa] uppercase mb-2 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]">&gt;&nbsp;HYDRATION</p>
-                        <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-blue-700 uppercase mb-2">&gt;&nbsp;HYDRATION</p>
+                        <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#fb7185] uppercase mb-2 drop-shadow-[0_0_5px_rgba(251,113,133,0.6)]">&gt;&nbsp;ERR_KCAL</p>
-                        <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-red-600 uppercase mb-2">&gt;&nbsp;JUNK_KCAL</p>
+                        <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#c084fc] uppercase mb-2 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]">&gt;&nbsp;ERR_PRO</p>
-                        <input type="number" id="junk-protein" placeholder="0" class="w-full bg-black border-2 border-white text-center text-white text-lg font-black mono-font py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-purple-600 uppercase mb-2">&gt;&nbsp;JUNK_PRO</p>
+                        <input type="number" id="junk-protein" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
                 </div>
                 
                 <!-- Left Metrics Bottom -->
-                <div id="metrics-log" class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-auto md:h-24"></div>
+                <div id="metrics-log" class="border-4 border-black bg-white p-4 h-auto md:h-24 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
             </div>
 
             <!-- RIGHT COLUMN (Workout & Steps) -->
             <div class="lg:col-span-7 flex flex-col gap-6 w-full">
                 <!-- Workout Panel -->
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative">
+                <div class="border-4 border-black bg-white p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative shadow-[4px_4px_0px_rgba(0,0,0,1)]">
                     
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b border-[#222] pb-4 md:pb-6 gap-4 sm:gap-0">
-                        <h2 class="text-base md:text-lg font-bold tracking-widest mono-font text-[#6b8fd9] drop-shadow-[0_0_8px_rgba(107,143,217,0.4)] mt-1 break-all">
-                            <span class="text-[#555]">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse text-white">_</span>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b-2 border-black pb-4 md:pb-6 gap-4 sm:gap-0">
+                        <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mt-1 break-all whitespace-nowrap overflow-hidden text-ellipsis">
+                            <span class="text-gray-500">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse">_</span>
                         </h2>
                         <div class="relative w-full sm:w-auto">
-                            <select id="split-selector" class="w-full sm:w-auto appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-[#111]" onchange="renderExercises()">
+                            <select id="split-selector" class="w-full sm:w-auto appearance-none bg-white border-2 border-black text-black font-bold px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-gray-100" onchange="renderExercises()">
                                 <option value="Chest">Chest</option>
                                 <option value="Abs">Abs</option>
                                 <option value="Biceps">Biceps</option>
@@ -117,7 +117,7 @@
                                 <option value="Leg">Leg</option>
                                 <option value="Cardio">Cardio</option>
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                             </div>
                         </div>
@@ -128,11 +128,11 @@
                 
                 <!-- Bottom Row: Steps and Activity Log -->
                 <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full">
-                    <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24 w-full sm:w-1/3 flex flex-col justify-between">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-[#fbbf24] uppercase mb-1 drop-shadow-[0_0_5px_rgba(251,191,36,0.6)]">&gt;&nbsp;SYS.STEPS</p>
-                        <input type="number" id="steps-in" placeholder="0" class="w-full bg-black border-2 border-white text-white text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
+                    <div class="border-4 border-black bg-white p-4 h-24 w-full sm:w-1/3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-orange-600 uppercase mb-1">&gt;&nbsp;SYS.STEPS</p>
+                        <input type="number" id="steps-in" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-black text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
-                    <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-full sm:w-2/3"></div>
+                    <div id="activity-log" class="border-4 border-dashed border-black bg-white p-4 h-24 w-full sm:w-2/3 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
                 </div>
             </div>
         </div>
@@ -140,25 +140,24 @@
         <!-- MAIN CONTENT: ANALYTICS -->
         <div id="view-analytics" class="hidden flex-col gap-6 w-full">
             
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#0a0a0a] border-4 border-[#222] p-4 gap-4 sm:gap-0">
-                <p class="text-xs tracking-widest uppercase font-bold text-gray-400">Database Status: <span id="db-status-badge" class="text-yellow-400">Loading Cloud Data...</span></p>
-                <button class="w-full sm:w-auto bg-[#1a1a1a] border-2 border-white text-white text-xs font-bold uppercase tracking-wider px-4 py-2 opacity-50 cursor-not-allowed">Auto-Fetching...</button>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 gap-4 sm:gap-0">
+                <p class="text-xs tracking-widest uppercase font-bold text-gray-600">Database Status: <span id="db-status-badge" class="text-orange-500">Loading Cloud Data...</span></p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-energy"></canvas></div>
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-protein"></canvas></div>
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-energy"></canvas></div>
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-protein"></canvas></div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-water"></canvas></div>
-                <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full"><canvas id="chart-steps"></canvas></div>
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-water"></canvas></div>
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-steps"></canvas></div>
             </div>
 
-            <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 md:p-6 w-full">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#222] pb-4 gap-4 sm:gap-0">
-                    <h3 class="mono-font text-xs md:text-sm font-bold tracking-widest uppercase text-[#e5e5e5] drop-shadow-[0_0_5px_rgba(255,255,255,0.4)] break-all">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
-                    <select id="analytics-exercise-selector" class="w-full sm:w-auto bg-black border-2 border-white text-white px-2 py-1 font-mono text-xs outline-none" onchange="renderWorkoutChart()">
+            <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full mb-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-black pb-4 gap-4 sm:gap-0">
+                    <h3 class="mono-font text-xs md:text-sm font-bold tracking-widest uppercase text-black break-all">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
+                    <select id="analytics-exercise-selector" class="w-full sm:w-auto bg-white border-2 border-black text-black font-bold px-2 py-1 font-mono text-xs outline-none cursor-pointer" onchange="renderWorkoutChart()">
                         <!-- Options populated by JS -->
                     </select>
                 </div>
@@ -273,14 +272,14 @@
             if (response.ok) {
                 storage = await response.json();
                 document.getElementById('db-status-badge').innerText = "Connected to MongoDB";
-                document.getElementById('db-status-badge').className = "text-green-400";
+                document.getElementById('db-status-badge').className = "text-green-600 font-black";
             } else {
                 throw new Error("API responded but not OK");
             }
         } catch (err) {
             console.warn("Could not reach DB API. Operating in memory-only mode.", err);
             document.getElementById('db-status-badge').innerText = "Offline (In-Memory)";
-            document.getElementById('db-status-badge').className = "text-red-400";
+            document.getElementById('db-status-badge').className = "text-red-600 font-black";
         }
 
         loadData(today);
@@ -297,16 +296,16 @@
 
             html += `
                 <div class="mb-5 first:mt-0">
-                    <h3 class="text-[10px] font-black tracking-widest text-[#6b8fd9] uppercase sticky top-0 bg-[#0a0a0a] py-2 border-b border-[#222] z-10">${cat}</h3>
+                    <h3 class="text-[10px] font-black tracking-widest text-black uppercase sticky top-0 bg-gray-100 py-2 border-b-2 border-t-2 border-black z-10 px-2 -mx-2">${cat}</h3>
                     <div class="flex flex-col mt-2">
             `;
 
             html += foodsInCat.map(f => `
-                <label class="flex items-center gap-4 py-2.5 border-b border-[#111] cursor-pointer hover:bg-[#111] transition-colors rounded px-2 -mx-2">
+                <label class="flex items-center gap-4 py-2.5 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors rounded px-2 -mx-2">
                     <input type="checkbox" id="chk-${f.id}" class="custom-chk flex-shrink-0" ${savedFoods.includes(f.id) ? 'checked' : ''} onchange="autoSave()">
                     <div class="flex-grow flex justify-between items-center text-sm">
-                        <span class="font-bold text-gray-300">${f.name}</span>
-                        <span class="mono-font text-xs text-[#555]">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1 hidden sm:inline">|</span> <span class="text-[#e5e5e5] hidden sm:inline">${f.p}g</span></span>
+                        <span class="font-bold text-gray-900">${f.name}</span>
+                        <span class="mono-font text-xs text-gray-600">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1 text-gray-300">|</span> <span class="text-black font-bold">${f.p}g</span></span>
                     </div>
                 </label>
             `).join('');
@@ -324,25 +323,25 @@
 
         if (split === 'Cardio') {
             document.getElementById('exercise-list').innerHTML = `
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#222] pb-4 gap-3 sm:gap-0">
-                    <span class="mono-font text-sm font-bold text-white w-full sm:w-1/4">Treadmill/Mix</span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-3 sm:gap-0">
+                    <span class="mono-font text-sm font-bold text-black w-full sm:w-1/4">Treadmill/Mix</span>
                     <div class="grid grid-cols-4 gap-2 w-full sm:w-3/4 sm:flex sm:justify-end">
-                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
                     </div>
                 </div>
             `;
         } else {
             const exercises = WORKOUT_DB[split];
             document.getElementById('exercise-list').innerHTML = exercises.map(ex => `
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#222] pb-4 gap-3 sm:gap-0">
-                    <span class="mono-font text-sm font-bold text-white truncate pr-2 w-full sm:w-auto">${ex}</span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-3 sm:gap-0">
+                    <span class="mono-font text-sm font-bold text-black truncate pr-2 w-full sm:w-auto">${ex}</span>
                     <div class="grid grid-cols-3 gap-2 w-full sm:w-auto sm:flex sm:gap-4">
-                        <input type="text" id="${ex}-s1" placeholder="S1" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s2" placeholder="S2" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s3" placeholder="S3" class="w-full sm:w-16 h-8 bg-black border-2 border-white text-center text-white text-sm mono-font placeholder-gray-600 focus:outline-none focus:border-[#6b8fd9]" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="autoSave()">
+                        <input type="text" id="${ex}-s1" placeholder="S1" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="autoSave()">
+                        <input type="text" id="${ex}-s2" placeholder="S2" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="autoSave()">
+                        <input type="text" id="${ex}-s3" placeholder="S3" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="autoSave()">
                     </div>
                 </div>
             `).join('');
@@ -388,7 +387,7 @@
         const badge = document.getElementById('db-status-badge');
         if(badge) {
             badge.innerText = "Typing...";
-            badge.className = "text-yellow-400";
+            badge.className = "text-yellow-600 font-bold";
         }
 
         syncTimeout = setTimeout(() => {
@@ -403,7 +402,7 @@
         
         if(badge) {
             badge.innerText = 'Syncing to Cloud...';
-            badge.className = 'text-yellow-400';
+            badge.className = 'text-blue-600 font-bold';
         }
         
         try {
@@ -416,7 +415,7 @@
             if (response.ok) {
                 if(badge) {
                     badge.innerText = 'All changes saved ✓';
-                    badge.className = 'text-green-400';
+                    badge.className = 'text-green-600 font-black';
                 }
             } else {
                 throw new Error('Sync returned non-200 status');
@@ -425,7 +424,7 @@
             console.error("Auto-sync failed:", error);
             if(badge) {
                 badge.innerText = 'Sync Failed ❌';
-                badge.className = 'text-red-500';
+                badge.className = 'text-red-600 font-black';
             }
         }
     }
@@ -447,12 +446,12 @@
         document.getElementById('metrics-log').innerHTML = `
             <div class="flex flex-row justify-between items-center h-full">
                 <div>
-                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#34d399] uppercase mb-1 drop-shadow-[0_0_5px_rgba(52,211,153,0.4)]">&gt;&nbsp;KCAL_IN</p>
-                    <p class="text-xl md:text-2xl font-black mono-font text-white">${totalKcal} <span class="text-[10px] md:text-xs text-[#6b8fd9]">kcal</span></p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-green-700 uppercase mb-1">&gt;&nbsp;KCAL_IN</p>
+                    <p class="text-xl md:text-2xl font-black mono-font text-black">${totalKcal} <span class="text-[10px] md:text-xs text-gray-500">kcal</span></p>
                 </div>
                 <div class="text-right">
-                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#60a5fa] uppercase mb-1 drop-shadow-[0_0_5px_rgba(96,165,250,0.4)]">PRO_IN&nbsp;&lt;</p>
-                    <p class="text-xl md:text-2xl font-black mono-font text-white">${totalProtein} <span class="text-[10px] md:text-xs text-[#6b8fd9]">g</span></p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-blue-700 uppercase mb-1">PRO_IN&nbsp;&lt;</p>
+                    <p class="text-xl md:text-2xl font-black mono-font text-black">${totalProtein} <span class="text-[10px] md:text-xs text-gray-500">g</span></p>
                 </div>
             </div>
         `;
@@ -464,9 +463,9 @@
         let stepsCount = parseInt(document.getElementById('steps-in').value) || 0;
         let stepBurn = stepsCount * 0.04; 
 
-        // Dynamic BMR Calculation via Mifflin-St Jeor Equation
+        // Dynamic BMR Calculation via Mifflin-St Jeor Equation - Default fallback weight updated to 67kg
         let currentWeight = parseFloat(document.getElementById('weight-in').value);
-        if (isNaN(currentWeight) || currentWeight === 0) currentWeight = 75; // Safe fallback to avoid breaking math
+        if (isNaN(currentWeight) || currentWeight === 0) currentWeight = 67; 
         
         const bmr = Math.round((10 * currentWeight) + (6.25 * USER_HEIGHT_CM) - (5 * USER_AGE) + 5);
         const caloriesOut = Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + stepBurn);
@@ -474,10 +473,10 @@
         document.getElementById('activity-log').innerHTML = `
             <div class="flex flex-row justify-between items-center h-full">
                 <div>
-                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] md:tracking-[0.2em] text-[#a855f7] uppercase mb-1 drop-shadow-[0_0_5px_rgba(168,85,247,0.4)]">&gt;&nbsp;EXPENDITURE</p>
-                    <p class="text-[9px] md:text-[10px] text-gray-400 font-bold tracking-wider">Base BMR: <span class="text-[#6b8fd9]">${bmr}</span></p>
+                    <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-purple-700 uppercase mb-1">&gt;&nbsp;EXPENDITURE</p>
+                    <p class="text-[9px] md:text-[10px] text-gray-500 font-bold tracking-wider">Base BMR: <span class="text-black font-black">${bmr}</span></p>
                 </div>
-                <p class="text-xl md:text-2xl font-black mono-font text-white">${caloriesOut} <span class="text-[10px] md:text-xs text-[#6b8fd9]">kcal</span></p>
+                <p class="text-xl md:text-2xl font-black mono-font text-black">${caloriesOut} <span class="text-[10px] md:text-xs text-gray-500">kcal</span></p>
             </div>
         `;
     }
@@ -506,15 +505,15 @@
             document.getElementById('view-analytics').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('flex');
             
-            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
-            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors';
         } else {
             document.getElementById('view-daily').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('hidden');
             document.getElementById('view-analytics').classList.add('flex');
             
-            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
-            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-white transition-colors';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors';
             
             generateCharts();
         }
@@ -524,10 +523,11 @@
     function generateCharts() {
         Object.values(charts).forEach(c => c.destroy());
         
-        Chart.defaults.color = '#888888';
+        // Light Theme Chart Defaults
+        Chart.defaults.color = '#4b5563'; // gray-600
         Chart.defaults.font.family = "'JetBrains Mono', monospace";
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
-        Chart.defaults.maintainAspectRatio = false; // Important for responsive charts
+        Chart.defaults.maintainAspectRatio = false; 
 
         const selectedDateStr = document.getElementById('date-picker').value;
         const parts = selectedDateStr.split('-');
@@ -560,8 +560,8 @@
             let cardioBurn = parseInt(dayData.cardio?.kcal) || 0;
             let stepCount = parseInt(dayData.steps) || 0;
             
-            // Reconstruct historical BMR
-            let dayWeight = parseFloat(dayData.weight) || parseFloat(getRecentWeight(dateStr)) || 75;
+            // Reconstruct historical BMR - Base weight 67kg
+            let dayWeight = parseFloat(dayData.weight) || parseFloat(getRecentWeight(dateStr)) || 67;
             let bmr = Math.round((10 * dayWeight) + (6.25 * USER_HEIGHT_CM) - (5 * USER_AGE) + 5);
             kcalOut.push(Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04)));
 
@@ -569,30 +569,30 @@
             stepsData.push(stepCount);
         }
 
-        // Add container height manually via JS to canvas wrappers if they squish, but relying on relative wrapper in HTML is cleaner.
-        
+        const gridOptions = { grid: { color: '#e5e7eb' } }; // Light gray grid lines
+
         charts.energy = new Chart(document.getElementById('chart-energy'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Kcal In', data: kcalIn, backgroundColor: '#e5e5e5' }, { label: 'Kcal Out', data: kcalOut, backgroundColor: '#333333' }, { label: 'Threshold (2500)', data: Array(7).fill(2500), type: 'line', borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
-            options: { plugins: { title: { display: true, text: 'Energy Balance (Kcal)' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            data: { labels: dates, datasets: [{ label: 'Kcal In', data: kcalIn, backgroundColor: '#d1d5db' }, { label: 'Kcal Out', data: kcalOut, backgroundColor: '#111827' }, { label: 'Threshold (2500)', data: Array(7).fill(2500), type: 'line', borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            options: { plugins: { title: { display: true, text: 'Energy Balance (Kcal)' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.protein = new Chart(document.getElementById('chart-protein'), { 
             type: 'line', 
-            data: { labels: dates, datasets: [{ label: 'Protein (g)', data: proteinData, borderColor: '#6b8fd9', backgroundColor: 'rgba(107, 143, 217, 0.1)', fill: true, tension: 0.3 }, { label: 'Goal (90g)', data: Array(7).fill(90), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
-            options: { plugins: { title: { display: true, text: 'Daily Protein Intake' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            data: { labels: dates, datasets: [{ label: 'Protein (g)', data: proteinData, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }, { label: 'Goal (90g)', data: Array(7).fill(90), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            options: { plugins: { title: { display: true, text: 'Daily Protein Intake' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.water = new Chart(document.getElementById('chart-water'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Water (Liters)', data: waterData, backgroundColor: '#38bdf8' }, { label: 'Goal (3L)', data: Array(7).fill(3), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
-            options: { plugins: { title: { display: true, text: 'Hydration Tracker' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            data: { labels: dates, datasets: [{ label: 'Water (Liters)', data: waterData, backgroundColor: '#0ea5e9' }, { label: 'Goal (3L)', data: Array(7).fill(3), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            options: { plugins: { title: { display: true, text: 'Hydration Tracker' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.steps = new Chart(document.getElementById('chart-steps'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Steps', data: stepsData, backgroundColor: '#fbbf24' }, { label: 'Goal (6000)', data: Array(7).fill(6000), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
-            options: { plugins: { title: { display: true, text: 'Step Count' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            data: { labels: dates, datasets: [{ label: 'Steps', data: stepsData, backgroundColor: '#f59e0b' }, { label: 'Goal (6000)', data: Array(7).fill(6000), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            options: { plugins: { title: { display: true, text: 'Step Count' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         renderWorkoutChart();
@@ -621,10 +621,12 @@
             s3Data.push(parseFloat(dayData.sets[`${selectedEx}-s3`]) || null);
         }
 
+        const gridOptions = { grid: { color: '#e5e7eb' } };
+
         charts.workout = new Chart(document.getElementById('chart-workout'), { 
             type: 'line', 
-            data: { labels: dates, datasets: [{ label: 'Set 1', data: s1Data, borderColor: '#e5e5e5', spanGaps: true, tension: 0.2 }, { label: 'Set 2', data: s2Data, borderColor: '#6b8fd9', spanGaps: true, tension: 0.2 }, { label: 'Set 3', data: s3Data, borderColor: '#a855f7', spanGaps: true, tension: 0.2 }] },
-            options: { maintainAspectRatio: false, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            data: { labels: dates, datasets: [{ label: 'Set 1', data: s1Data, borderColor: '#9ca3af', spanGaps: true, tension: 0.2 }, { label: 'Set 2', data: s2Data, borderColor: '#3b82f6', spanGaps: true, tension: 0.2 }, { label: 'Set 3', data: s3Data, borderColor: '#a855f7', spanGaps: true, tension: 0.2 }] },
+            options: { maintainAspectRatio: false, scales: { y: gridOptions, x: gridOptions } }
         });
     }
 
