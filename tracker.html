@@ -28,32 +28,20 @@
         .mono-font { font-family: 'JetBrains Mono', monospace; }
         .title-font { font-family: 'Outfit', sans-serif; }
         
-        /* Custom Checkbox Styling */
+        /* Custom Checkbox */
         .custom-chk {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background-color: transparent;
-            border: 2px solid white;
-            cursor: pointer;
-            display: grid;
-            place-content: center;
+            appearance: none; width: 20px; height: 20px; background-color: transparent; border: 2px solid white; cursor: pointer; display: grid; place-content: center;
         }
         .custom-chk::before {
-            content: "";
-            width: 10px;
-            height: 10px;
-            transform: scale(0);
-            background-color: black;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            content: ""; width: 10px; height: 10px; transform: scale(0); background-color: black; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
         }
         .custom-chk:checked { background-color: white; }
         .custom-chk:checked::before { transform: scale(1); }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; } 
         ::-webkit-scrollbar-thumb { background: var(--border-heavy); }
-        
+        ::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+
         .tab-active { border: 2px solid white; color: white; }
         .tab-inactive { color: var(--text-muted); border: 2px solid transparent; }
     </style>
@@ -75,8 +63,7 @@
                     <button id="btn-analytics" onclick="switchTab('analytics')" class="tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors">Analytics Report</button>
                 </div>
                 
-                <!-- Date Picker -->
-                <input type="date" id="date-picker" class="bg-black border-4 border-white p-2 text-sm font-bold mono-font text-white uppercase outline-none focus:border-gray-300">
+                <input type="date" id="date-picker" style="color-scheme: dark;" class="bg-black border-4 border-white p-2 text-sm font-bold mono-font text-white uppercase outline-none focus:border-gray-300 cursor-pointer">
             </div>
         </header>
 
@@ -85,16 +72,13 @@
             
             <!-- LEFT COLUMN (Nutrition & Hydration) -->
             <div class="col-span-4 flex flex-col gap-6">
-                
                 <!-- Food List Panel -->
                 <div class="border-4 border-[#222] bg-[#0a0a0a] p-6 h-[500px] flex flex-col">
                     <h2 class="text-2xl font-black uppercase tracking-widest title-font bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent mb-6 drop-shadow-sm">Compiling Calories</h2>
-                    <div id="food-list" class="flex-col gap-4 overflow-y-auto pr-2 flex-grow">
-                        <!-- Foods populated by JS -->
-                    </div>
+                    <div id="food-list" class="flex-col gap-4 overflow-y-auto pr-2 flex-grow"></div>
                 </div>
 
-                <!-- Manual Entries Grid (Water, Junk Kcal, Junk Pro) -->
+                <!-- Manual Entries Grid -->
                 <div class="grid grid-cols-3 gap-4">
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-3 flex flex-col justify-between">
                         <p class="text-[10px] font-black tracking-widest text-blue-300 opacity-80 uppercase mb-2">Water (L)</p>
@@ -110,10 +94,8 @@
                     </div>
                 </div>
                 
-                <!-- Left Metrics Bottom (Calories/Protein) -->
-                <div id="metrics-log" class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24">
-                    <!-- Populated by JS -->
-                </div>
+                <!-- Left Metrics Bottom -->
+                <div id="metrics-log" class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24"></div>
             </div>
 
             <!-- RIGHT COLUMN (Workout & Steps) -->
@@ -121,11 +103,8 @@
                 <!-- Workout Panel -->
                 <div class="border-4 border-[#222] bg-[#0a0a0a] p-8 flex flex-col min-h-[630px] relative">
                     
-                    <!-- Workout Header -->
                     <div class="flex justify-between items-start mb-12">
                         <h2 class="text-2xl font-black uppercase tracking-widest title-font bg-gradient-to-r from-[#6b8fd9] to-purple-400 bg-clip-text text-transparent mt-1 drop-shadow-sm">Building muscles ...... Testing Strength</h2>
-                        
-                        <!-- Dropdown -->
                         <div class="relative">
                             <select id="split-selector" class="appearance-none bg-black border-2 border-white text-white px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer" onchange="renderExercises()">
                                 <option value="Chest">Chest</option>
@@ -143,12 +122,8 @@
                         </div>
                     </div>
 
-                    <!-- Exercises List -->
-                    <div id="exercise-list" class="flex flex-col gap-6 flex-grow">
-                        <!-- Exercises populated by JS -->
-                    </div>
+                    <div id="exercise-list" class="flex flex-col gap-6 flex-grow"></div>
 
-                    <!-- Sync Button -->
                     <button onclick="synchronizeData()" class="w-full bg-[#e5e5e5] text-black font-black uppercase tracking-[0.2em] py-4 mt-8 hover:bg-white transition-colors">
                         Synchronize Data
                     </button>
@@ -156,64 +131,55 @@
                 
                 <!-- Bottom Row: Steps and Activity Log -->
                 <div class="flex gap-6">
-                    <!-- Steps -->
                     <div class="border-4 border-[#222] bg-[#0a0a0a] p-4 h-24 w-1/3 flex flex-col justify-between">
                         <p class="text-[9px] font-mono tracking-widest text-[#6b8fd9] uppercase mb-1">STEPS_COUNT</p>
                         <input type="number" id="steps-in" placeholder="0" class="w-full bg-black border-2 border-white text-white text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-[#6b8fd9]" oninput="autoSave()">
                     </div>
-                    
-                    <!-- Right Activity Bottom (Calories Burnt) -->
-                    <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-2/3">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="activity-log" class="border-4 border-dashed border-[#222] bg-[#0a0a0a] p-4 h-24 w-2/3"></div>
                 </div>
             </div>
         </div>
 
         <!-- MAIN CONTENT: ANALYTICS -->
-        <div id="view-analytics" class="hidden grid-cols-2 gap-6 mt-8">
-            <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart1"></canvas></div>
-            <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart2"></canvas></div>
+        <div id="view-analytics" class="hidden flex-col gap-6">
+            
+            <div class="flex justify-between items-center bg-[#0a0a0a] border-4 border-[#222] p-4">
+                <p class="text-xs tracking-widest uppercase font-bold text-gray-400">Database Status: <span class="text-yellow-400">Local Storage Only</span></p>
+                <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider px-4 py-2" onclick="alert('Ready for backend integration!')">Sync to Cloud DB</button>
+            </div>
+
+            <!-- Top Row: Macros & Energy -->
+            <div class="grid grid-cols-2 gap-6">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-energy"></canvas></div>
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-protein"></canvas></div>
+            </div>
+
+            <!-- Middle Row: Hydration & Activity -->
+            <div class="grid grid-cols-2 gap-6">
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-water"></canvas></div>
+                <div class="border-4 border-[#222] bg-[#0a0a0a] p-6"><canvas id="chart-steps"></canvas></div>
+            </div>
+
+            <!-- Bottom Row: Workout Progress -->
+            <div class="border-4 border-[#222] bg-[#0a0a0a] p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-black tracking-widest uppercase text-white">Strength Progression (14-Day)</h3>
+                    <select id="analytics-exercise-selector" class="bg-black border-2 border-white text-white px-2 py-1 font-mono text-xs outline-none" onchange="renderWorkoutChart()">
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+                <div class="h-[300px]"><canvas id="chart-workout"></canvas></div>
+            </div>
+
         </div>
 
     </div>
 
 <script>
-    // Merged Food Database
     const FOOD_DB = [
-        { id: 'f1', name: '3 Egg Omelette', kcal: 210, p: 18 },
-        { id: 'f2', name: '3 Boiled egg white', kcal: 60, p: 12 },
-        { id: 'f3', name: '2 Wheat Bread Slices', kcal: 140, p: 7 },
-        { id: 'f4', name: '1 Spoon Peanut Butter', kcal: 95, p: 3 },
-        { id: 'f5', name: 'Any Paratha', kcal: 100, p: 4 },
-        { id: 'f6', name: '2 Plain Dosa', kcal: 100, p: 6 },
-        { id: 'f7', name: 'Ginger Tea - pre lunch', kcal: 60, p: 3 },
-        { id: 'f8', name: '2 Roti (Lunch)', kcal: 200, p: 6 },
-        { id: 'f9', name: 'Paneer Curry (Lunch)', kcal: 200, p: 10 },
-        { id: 'f10', name: 'Dal (Lunch)', kcal: 150, p: 5 },
-        { id: 'f11', name: 'Greek Yogurt Cup (Lunch)', kcal: 90, p: 6 },
-        { id: 'f12', name: 'Ginger Tea (Snacks)', kcal: 60, p: 3 },
-        { id: 'f13', name: '2 Bananas (Snacks)', kcal: 180, p: 4 },
-        { id: 'f14', name: '30 Pista (Snacks)', kcal: 100, p: 3 },
-        { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6 },
-        { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10 },
-        { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5 },
-        { id: 'f18', name: 'Night Shake (1.5 Scoop)', kcal: 500, p: 48 },
-        { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17 },
-        { id: 'f20', name: '1 cup rice', kcal: 180, p: 0 },
-        { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3 },
-        { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32 },
-        { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21 },
-        { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15 },
-        { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6 },
-        { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9 },
-        { id: 'f27', name: 'Chhole Kulcha', kcal: 400, p: 27 },
-        { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26 },
-        { id: 'f29', name: 'Grilled Barbeque Chicken Rice Bowl', kcal: 650, p: 30 },
-        { id: 'f30', name: 'Cookie Monster Sundae', kcal: 900, p: 6 },
+        { id: 'f1', name: '3 Egg Omelette', kcal: 210, p: 18 }, { id: 'f2', name: '3 Boiled egg white', kcal: 60, p: 12 }, { id: 'f3', name: '2 Wheat Bread Slices', kcal: 140, p: 7 }, { id: 'f4', name: '1 Spoon Peanut Butter', kcal: 95, p: 3 }, { id: 'f5', name: 'Any Paratha', kcal: 100, p: 4 }, { id: 'f6', name: '2 Plain Dosa', kcal: 100, p: 6 }, { id: 'f7', name: 'Ginger Tea - pre lunch', kcal: 60, p: 3 }, { id: 'f8', name: '2 Roti (Lunch)', kcal: 200, p: 6 }, { id: 'f9', name: 'Paneer Curry (Lunch)', kcal: 200, p: 10 }, { id: 'f10', name: 'Dal (Lunch)', kcal: 150, p: 5 }, { id: 'f11', name: 'Greek Yogurt Cup (Lunch)', kcal: 90, p: 6 }, { id: 'f12', name: 'Ginger Tea (Snacks)', kcal: 60, p: 3 }, { id: 'f13', name: '2 Bananas (Snacks)', kcal: 180, p: 4 }, { id: 'f14', name: '30 Pista (Snacks)', kcal: 100, p: 3 }, { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6 }, { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10 }, { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5 }, { id: 'f18', name: 'Night Shake (1.5 Scoop)', kcal: 500, p: 48 }, { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17 }, { id: 'f20', name: '1 cup rice', kcal: 180, p: 0 }, { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3 }, { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32 }, { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21 }, { id: 'f24', name: 'Paneer Lababdar', kcal: 450, p: 15 }, { id: 'f25', name: '2 Whole Wheat Chapati', kcal: 200, p: 6 }, { id: 'f26', name: 'Kasuri Methi Tawa Paratha', kcal: 300, p: 9 }, { id: 'f27', name: 'Chhole Kulcha', kcal: 400, p: 27 }, { id: 'f28', name: 'Yellow Dal Tadka', kcal: 450, p: 26 }, { id: 'f29', name: 'Grilled Barbeque Chicken Rice Bowl', kcal: 650, p: 30 }, { id: 'f30', name: 'Cookie Monster Sundae', kcal: 900, p: 6 }
     ];
 
-    // Restructured Workout Splits
     const WORKOUT_DB = {
         "Chest": ['Incline Bench', 'Flat Bench', 'Pec Fly', 'Push-ups', 'Low to High Cable Pull'],
         "Abs": ['Crunches', 'Leg Raises', 'Plank', 'Roller'],
@@ -225,14 +191,29 @@
         "Cardio": [] 
     };
 
-    let storage = JSON.parse(localStorage.getItem('ht_v15')) || {};
+    let storage = JSON.parse(localStorage.getItem('ht_v16')) || {};
     let activeTab = 'daily';
-    let chart1Inst = null;
-    let chart2Inst = null;
+    let charts = {};
 
     function init() {
         document.getElementById('date-picker').value = '2026-06-06';
-        document.getElementById('date-picker').onchange = (e) => loadData(e.target.value);
+        document.getElementById('date-picker').onchange = (e) => {
+            loadData(e.target.value);
+            if(activeTab === 'analytics') generateCharts();
+        };
+
+        // Populate Analytics Workout Dropdown
+        const selector = document.getElementById('analytics-exercise-selector');
+        Object.keys(WORKOUT_DB).forEach(split => {
+            if(split !== 'Cardio') {
+                WORKOUT_DB[split].forEach(ex => {
+                    const opt = document.createElement('option');
+                    opt.value = ex; opt.innerText = ex;
+                    selector.appendChild(opt);
+                });
+            }
+        });
+
         loadData('2026-06-06');
     }
 
@@ -287,16 +268,12 @@
         const split = document.getElementById('split-selector').value;
         const existingData = storage[date] || { sets: {}, cardio: {} };
         
-        // Save Foods
         const selectedFoods = FOOD_DB.filter(f => document.getElementById(`chk-${f.id}`)?.checked).map(f => f.id);
-        
-        // Save Quick Entries
         const water = document.getElementById('water-in').value;
         const steps = document.getElementById('steps-in').value;
         const junkKcal = document.getElementById('junk-kcal').value;
         const junkProtein = document.getElementById('junk-protein').value;
 
-        // Save Strength Sets
         const sets = {};
         if (split !== 'Cardio') {
             WORKOUT_DB[split].forEach(ex => {
@@ -307,7 +284,6 @@
         }
         const updatedSets = { ...existingData.sets, ...sets };
 
-        // Save Cardio Data
         const cardio = {
             incline: document.getElementById('cardio-incline') ? document.getElementById('cardio-incline').value : existingData.cardio?.incline || '',
             speed: document.getElementById('cardio-speed') ? document.getElementById('cardio-speed').value : existingData.cardio?.speed || '',
@@ -316,7 +292,7 @@
         };
 
         storage[date] = { split, foods: selectedFoods, sets: updatedSets, water, steps, junkKcal, junkProtein, cardio };
-        localStorage.setItem('ht_v15', JSON.stringify(storage));
+        localStorage.setItem('ht_v16', JSON.stringify(storage));
         
         updateMetrics();
     }
@@ -325,11 +301,9 @@
         const date = document.getElementById('date-picker').value;
         const currentData = storage[date] || { sets: {}, cardio: {} };
 
-        // Base intake from manual junk fields
         let totalKcal = parseInt(document.getElementById('junk-kcal').value) || 0;
         let totalProtein = parseInt(document.getElementById('junk-protein').value) || 0;
         
-        // Calculate Checklist Intake
         FOOD_DB.forEach(f => {
             if(document.getElementById(`chk-${f.id}`)?.checked) {
                 totalKcal += f.kcal;
@@ -337,7 +311,6 @@
             }
         });
 
-        // Render Left Metrics Log (Intake)
         document.getElementById('metrics-log').innerHTML = `
             <div class="flex justify-between items-center h-full">
                 <div>
@@ -351,16 +324,16 @@
             </div>
         `;
 
-        // Check if lifting workout is active (any set has a value saved in storage)
-        let workoutActive = Object.values(currentData.sets).some(val => val !== '');
+        let workoutActive = false;
+        if(currentData.sets) workoutActive = Object.values(currentData.sets).some(val => val !== '');
         
-        // Pull active cardio burn
         let cardioBurn = parseInt(currentData.cardio?.kcal) || 0;
+        let stepsCount = parseInt(document.getElementById('steps-in').value) || 0;
+        let stepBurn = stepsCount * 0.04; // Standard 0.04 kcal per step
 
-        // Calculate Burn (Base + Active Lifting + Active Cardio)
-        const caloriesOut = 1658 + (workoutActive ? 350 : 0) + cardioBurn;
+        // Dynamic Out Calculation
+        const caloriesOut = Math.round(1658 + (workoutActive ? 350 : 0) + cardioBurn + stepBurn);
 
-        // Render Right Activity Log (Burn)
         document.getElementById('activity-log').innerHTML = `
             <div class="flex justify-between items-center h-full">
                 <div>
@@ -396,17 +369,18 @@
     }
 
     function switchTab(tab) {
+        activeTab = tab; 
         if(tab === 'daily') {
             document.getElementById('view-daily').classList.remove('hidden');
             document.getElementById('view-analytics').classList.add('hidden');
-            document.getElementById('view-analytics').classList.remove('grid');
+            document.getElementById('view-analytics').classList.remove('flex');
             
             document.getElementById('btn-daily').className = 'tab-active px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
             document.getElementById('btn-analytics').className = 'tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors';
         } else {
             document.getElementById('view-daily').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('hidden');
-            document.getElementById('view-analytics').classList.add('grid');
+            document.getElementById('view-analytics').classList.add('flex');
             
             document.getElementById('btn-analytics').className = 'tab-active px-6 py-2 text-sm font-bold bg-[#1a1a1a]';
             document.getElementById('btn-daily').className = 'tab-inactive px-6 py-2 text-sm font-bold hover:text-white transition-colors';
@@ -415,32 +389,147 @@
         }
     }
 
+    // Standardize charts handling
     function generateCharts() {
-        if(chart1Inst) chart1Inst.destroy();
-        if(chart2Inst) chart2Inst.destroy();
+        Object.values(charts).forEach(c => c.destroy());
         
         Chart.defaults.color = '#888888';
         Chart.defaults.font.family = "'JetBrains Mono', monospace";
+        Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
-        chart1Inst = new Chart(document.getElementById('chart1'), { 
+        const selectedDateStr = document.getElementById('date-picker').value;
+        const parts = selectedDateStr.split('-');
+        const baseDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+        const dates = [];
+        const kcalIn = [], kcalOut = [];
+        const waterData = [], stepsData = [], proteinData = [];
+
+        // 7-Day lookback loop
+        for(let i=6; i>=0; i--) {
+            const d = new Date(baseDate);
+            d.setDate(d.getDate() - i);
+            const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            dates.push(`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`); 
+
+            const dayData = storage[dateStr] || { foods: [], sets: {}, cardio: {}, steps: 0, water: 0, junkKcal: 0, junkProtein: 0 };
+            
+            // 1. Calories In & Protein In
+            let kIn = parseInt(dayData.junkKcal) || 0;
+            let pIn = parseInt(dayData.junkProtein) || 0;
+            if(dayData.foods) {
+                dayData.foods.forEach(fId => {
+                    const food = FOOD_DB.find(f => f.id === fId);
+                    if(food) { kIn += food.kcal; pIn += food.p; }
+                });
+            }
+            kcalIn.push(kIn);
+            proteinData.push(pIn);
+
+            // 2. Calories Out (Base + Lift + Steps + Cardio)
+            let workoutActive = dayData.sets && Object.values(dayData.sets).some(val => val !== '');
+            let cardioBurn = parseInt(dayData.cardio?.kcal) || 0;
+            let stepCount = parseInt(dayData.steps) || 0;
+            kcalOut.push(Math.round(1658 + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04)));
+
+            // 3. Water & Steps
+            waterData.push(parseFloat(dayData.water) || 0);
+            stepsData.push(stepCount);
+        }
+
+        // Chart 1: Energy
+        charts.energy = new Chart(document.getElementById('chart-energy'), { 
             type: 'bar', 
             data: { 
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
+                labels: dates, 
                 datasets: [
-                    { label: 'Kcal Consumed', data: [2100, 2400, 1950, 2600, 2200, 3100, 2000], backgroundColor: '#e5e5e5' },
-                    { label: 'Kcal Burned', data: [2500, 2500, 2100, 2800, 2500, 2900, 2100], backgroundColor: '#333333' }
+                    { label: 'Kcal In', data: kcalIn, backgroundColor: '#e5e5e5' },
+                    { label: 'Kcal Out', data: kcalOut, backgroundColor: '#333333' },
+                    { label: 'Threshold (2500)', data: Array(7).fill(2500), type: 'line', borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }
                 ] 
             },
-            options: { plugins: { title: { display: true, text: 'Energy Balance (Last 7 Days)' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            options: { plugins: { title: { display: true, text: 'Energy Balance (Kcal)' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
         });
 
-        chart2Inst = new Chart(document.getElementById('chart2'), { 
+        // Chart 2: Protein
+        charts.protein = new Chart(document.getElementById('chart-protein'), { 
             type: 'line', 
             data: { 
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
-                datasets: [{ label: 'Workout Volume (kg)', data: [4500, 0, 5200, 0, 4800, 3000, 0], borderColor: '#6b8fd9', backgroundColor: 'rgba(107, 143, 217, 0.1)', fill: true, tension: 0.2 }] 
+                labels: dates, 
+                datasets: [
+                    { label: 'Protein (g)', data: proteinData, borderColor: '#6b8fd9', backgroundColor: 'rgba(107, 143, 217, 0.1)', fill: true, tension: 0.3 },
+                    { label: 'Goal (90g)', data: Array(7).fill(90), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }
+                ] 
             },
-            options: { plugins: { title: { display: true, text: 'Lifting Volume Trend' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+            options: { plugins: { title: { display: true, text: 'Daily Protein Intake' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+        });
+
+        // Chart 3: Water
+        charts.water = new Chart(document.getElementById('chart-water'), { 
+            type: 'bar', 
+            data: { 
+                labels: dates, 
+                datasets: [
+                    { label: 'Water (Liters)', data: waterData, backgroundColor: '#38bdf8' },
+                    { label: 'Goal (3L)', data: Array(7).fill(3), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }
+                ] 
+            },
+            options: { plugins: { title: { display: true, text: 'Hydration Tracker' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+        });
+
+        // Chart 4: Steps
+        charts.steps = new Chart(document.getElementById('chart-steps'), { 
+            type: 'bar', 
+            data: { 
+                labels: dates, 
+                datasets: [
+                    { label: 'Steps', data: stepsData, backgroundColor: '#fbbf24' },
+                    { label: 'Goal (6000)', data: Array(7).fill(6000), type: 'line', borderColor: '#4ade80', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }
+                ] 
+            },
+            options: { plugins: { title: { display: true, text: 'Step Count' } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
+        });
+
+        renderWorkoutChart(); // Render Chart 5
+    }
+
+    function renderWorkoutChart() {
+        if(charts.workout) charts.workout.destroy();
+        
+        const selectedEx = document.getElementById('analytics-exercise-selector').value;
+        const selectedDateStr = document.getElementById('date-picker').value;
+        const parts = selectedDateStr.split('-');
+        const baseDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+        const dates = [];
+        const s1Data = [], s2Data = [], s3Data = [];
+
+        // 14-Day lookback for strength progression
+        for(let i=13; i>=0; i--) {
+            const d = new Date(baseDate);
+            d.setDate(d.getDate() - i);
+            const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            dates.push(`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`); 
+
+            const dayData = storage[dateStr] || { sets: {} };
+            
+            // Try to parse weight/reps from input (e.g. if input is "50", parse 50)
+            s1Data.push(parseFloat(dayData.sets[`${selectedEx}-s1`]) || null);
+            s2Data.push(parseFloat(dayData.sets[`${selectedEx}-s2`]) || null);
+            s3Data.push(parseFloat(dayData.sets[`${selectedEx}-s3`]) || null);
+        }
+
+        charts.workout = new Chart(document.getElementById('chart-workout'), { 
+            type: 'line', 
+            data: { 
+                labels: dates, 
+                datasets: [
+                    { label: 'Set 1', data: s1Data, borderColor: '#e5e5e5', spanGaps: true, tension: 0.2 },
+                    { label: 'Set 2', data: s2Data, borderColor: '#6b8fd9', spanGaps: true, tension: 0.2 },
+                    { label: 'Set 3', data: s3Data, borderColor: '#a855f7', spanGaps: true, tension: 0.2 }
+                ] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { grid: { color: '#222' } }, x: { grid: { color: '#222' } } } }
         });
     }
 
