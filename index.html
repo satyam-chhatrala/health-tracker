@@ -31,7 +31,7 @@
 
         ::-webkit-scrollbar { width: 6px; } 
         ::-webkit-scrollbar-thumb { background: var(--border-heavy); }
-        ::-webkit-calendar-picker-indicator { cursor: pointer; } /* Removed invert for light mode */
+        ::-webkit-calendar-picker-indicator { cursor: pointer; } 
 
         .tab-active { border: 2px solid black; color: white; background-color: black; }
         .tab-inactive { color: #4b5563; border: 2px solid transparent; background-color: #e5e7eb; }
@@ -65,7 +65,7 @@
             <div class="lg:col-span-5 flex flex-col gap-6 w-full">
                 <!-- Food List Panel -->
                 <div class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 pb-2 border-b-2 border-black break-all whitespace-nowrap overflow-hidden text-ellipsis">
+                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 break-all whitespace-nowrap overflow-hidden text-ellipsis">
                         <span class="text-gray-500">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse">_</span>
                     </h2>
                     
@@ -94,7 +94,7 @@
                 </div>
                 
                 <!-- Left Metrics Bottom -->
-                <div id="metrics-log" class="border-4 border-black bg-white p-4 h-auto md:h-24 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+                <div id="metrics-log" class="border-4 border-black bg-gray-100 p-4 h-auto md:h-24 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
             </div>
 
             <!-- RIGHT COLUMN (Workout & Steps) -->
@@ -132,7 +132,7 @@
                         <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-orange-600 uppercase mb-1">&gt;&nbsp;SYS.STEPS</p>
                         <input type="number" id="steps-in" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-black text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
                     </div>
-                    <div id="activity-log" class="border-4 border-dashed border-black bg-white p-4 h-24 w-full sm:w-2/3 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+                    <div id="activity-log" class="border-4 border-dashed border-black bg-gray-100 p-4 h-24 w-full sm:w-2/3 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
                 </div>
             </div>
         </div>
@@ -142,6 +142,7 @@
             
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 gap-4 sm:gap-0">
                 <p class="text-xs tracking-widest uppercase font-bold text-gray-600">Database Status: <span id="db-status-badge" class="text-orange-500">Loading Cloud Data...</span></p>
+                <button class="w-full sm:w-auto bg-gray-100 border-2 border-gray-300 text-gray-500 text-xs font-bold uppercase tracking-wider px-4 py-2 cursor-not-allowed">Auto-Fetching...</button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
