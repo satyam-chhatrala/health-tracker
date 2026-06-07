@@ -64,13 +64,13 @@
             <!-- LEFT COLUMN (Nutrition & Hydration) -->
             <div class="lg:col-span-5 flex flex-col gap-6 w-full">
                 <!-- Food List Panel -->
-                <div class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 break-all whitespace-nowrap overflow-hidden text-ellipsis">
+                <div id="nutrition-panel" class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-colors duration-500">
+                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 pb-2 border-b-2 border-black shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
                         <span class="text-gray-500">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse">_</span>
                     </h2>
                     
                     <!-- Categorized Food List Wrapper -->
-                    <div id="food-list" class="flex-col gap-2 overflow-y-auto pr-2 flex-grow relative"></div>
+                    <div id="food-list" class="flex flex-col gap-2 overflow-y-auto pr-2 flex-grow min-h-0 relative"></div>
                 </div>
 
                 <!-- Manual Entries Grid -->
@@ -102,7 +102,7 @@
                 <!-- Workout Panel -->
                 <div class="border-4 border-black bg-white p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative shadow-[4px_4px_0px_rgba(0,0,0,1)]">
                     
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b-2 border-black pb-4 md:pb-6 gap-4 sm:gap-0">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b-2 border-black pb-4 md:pb-6 gap-4 sm:gap-0 shrink-0">
                         <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mt-1 break-all whitespace-nowrap overflow-hidden text-ellipsis">
                             <span class="text-gray-500">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse">_</span>
                         </h2>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div id="exercise-list" class="flex flex-col gap-6 flex-grow"></div>
+                    <div id="exercise-list" class="flex flex-col gap-6 flex-grow overflow-y-auto min-h-0 pr-2"></div>
                 </div>
                 
                 <!-- Bottom Row: Steps and Activity Log -->
@@ -194,6 +194,8 @@
         { id: 'f5', name: 'Any Paratha', kcal: 100, p: 4, category: 'Breakfast' }, 
         { id: 'f6', name: '2 Plain Dosa', kcal: 100, p: 6, category: 'Breakfast' }, 
         { id: 'f7', name: 'Ginger Tea - pre lunch', kcal: 60, p: 3, category: 'Breakfast' }, 
+        { id: 'f34', name: '3 Egg Bhurji', kcal: 328, p: 15, category: 'Breakfast' }, 
+        { id: 'f35', name: '3 Egg Scrambled', kcal: 400, p: 18, category: 'Breakfast' }, 
 
         // LUNCH
         { id: 'f8', name: '2 Roti (Lunch)', kcal: 200, p: 6, category: 'Lunch' }, 
@@ -211,10 +213,15 @@
         { id: 'f15', name: '2 Roti (Dinner)', kcal: 200, p: 6, category: 'Dinner' }, 
         { id: 'f16', name: 'Paneer Curry (Dinner)', kcal: 200, p: 10, category: 'Dinner' }, 
         { id: 'f17', name: 'Dal (Dinner)', kcal: 150, p: 5, category: 'Dinner' }, 
-        { id: 'f18', name: 'Protein Shake', kcal: 500, p: 48, category: 'Dinner' }, 
+        { id: 'f18', name: 'Protein Shake', kcal: 500, p: 42, category: 'Dinner' }, 
         
+        // EXTRA
+        { id: 'f31', name: '20g Protein Yoga Bar', kcal: 327, p: 20, category: 'Extra' },
+        { id: 'f32', name: '12g Whole Truth Protein Bar', kcal: 250, p: 12, category: 'Extra' },
+        { id: 'f33', name: 'Superyou Protein Wafer', kcal: 200, p: 10, category: 'Extra' },
+
         // WEEKEND ORDERS
-        { id: 'f19', name: ' Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17, category: 'Weekend Orders' }, 
+        { id: 'f19', name: 'Thali - Matar Paneer, 3 Roti, Kali Dal', kcal: 600, p: 17, category: 'Weekend Orders' }, 
         { id: 'f21', name: 'Vada Pav', kcal: 170, p: 3, category: 'Weekend Orders' }, 
         { id: 'f22', name: 'Paneer Subz Khichadi', kcal: 685, p: 32, category: 'Weekend Orders' }, 
         { id: 'f23', name: 'Paneer Bhurji', kcal: 426, p: 21, category: 'Weekend Orders' }, 
@@ -228,12 +235,12 @@
     ];
 
     const WORKOUT_DB = {
-        "Chest": ['Incline Bench', 'Flat Bench', 'Pec Fly', 'Push-ups', 'Low to High Cable Pull'],
-        "Abs": ['Crunches', 'Leg Raises', 'Plank', 'Roller'],
-        "Biceps": ['Bicep Curls', 'Hammer Curls', 'Preacher Curls'],
-        "Triceps": ['Tricep Pushdowns', 'Overhead Extension', 'Dips', 'Skull Crushers'],
+        "Chest": ['Incline Bench', 'Flat Bench', 'Pec Fly Machine', 'Dumbbell Pec Fly', 'Push-ups', 'Low to High Cable Pull'],
+        "Abs": ['Crunches', 'Leg Raises', 'Plank', 'Roller', 'Side Abs'],
+        "Biceps": ['Bicep Curls', 'Hammer Curls', 'Preacher Curls', 'Incline Bench Curls'],
+        "Triceps": ['Cable Pushdown', 'Overhead Extension', 'Dips', 'Skull Crushers', 'Single Hand Cable Pull'],
         "Back": ['Pull-ups', 'Barbell Rows', 'Lat Pulldown', 'Face Pulls'],
-        "Shoulder": ['Overhead Press', 'Lateral Raises', 'Front Raises', 'Reverse Pec Fly', 'Military Press'],
+        "Shoulder": ['Overhead Press Machine', 'Lateral Raise Machine', 'Front Raises', 'Reverse Pec Fly', 'Military Press', 'Cable Face Pull'],
         "Leg": ['Squats', 'Leg Press', 'Calf Raises', 'Leg Extensions', 'Hamstring Curl', 'Lunges'],
         "Cardio": [] 
     };
@@ -246,6 +253,46 @@
             if (storage[d].weight) return storage[d].weight;
         }
         return ''; 
+    }
+
+    // Helper: Scans backward in database to find the last time this exercise was performed
+    function getPreviousWorkoutData(exerciseName, targetDate) {
+        const dates = Object.keys(storage).filter(k => k < targetDate).sort().reverse();
+        for (let d of dates) {
+            if (storage[d].sets) {
+                if (storage[d].sets[`${exerciseName}-s1`] || storage[d].sets[`${exerciseName}-s2`] || storage[d].sets[`${exerciseName}-s3`]) {
+                    return {
+                        s1: storage[d].sets[`${exerciseName}-s1`] || '',
+                        s2: storage[d].sets[`${exerciseName}-s2`] || '',
+                        s3: storage[d].sets[`${exerciseName}-s3`] || ''
+                    };
+                }
+            }
+        }
+        return { s1: '', s2: '', s3: '' };
+    }
+
+    // Dynamic color coding for workout inputs based on previous performance
+    function colorCodeInput(inputElem) {
+        const val = parseFloat(inputElem.value);
+        const prevStr = inputElem.getAttribute('data-prev');
+        
+        inputElem.classList.remove('bg-gray-50', 'bg-red-200', 'bg-yellow-200', 'bg-green-200');
+        
+        if (!prevStr || isNaN(val)) {
+            inputElem.classList.add('bg-gray-50'); 
+            return;
+        }
+        
+        const prev = parseFloat(prevStr);
+        if (isNaN(prev)) {
+            inputElem.classList.add('bg-gray-50');
+            return;
+        }
+
+        if (val < prev) inputElem.classList.add('bg-red-200');
+        else if (val === prev) inputElem.classList.add('bg-yellow-200');
+        else inputElem.classList.add('bg-green-200');
     }
 
     // INIT: Fetches database state on load
@@ -288,7 +335,7 @@
 
     // RENDER CATEGORIZED FOODS
     function renderFoods(savedFoods = []) {
-        const categories = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Weekend Orders'];
+        const categories = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Extra', 'Weekend Orders'];
         let html = '';
 
         categories.forEach(cat => {
@@ -297,16 +344,16 @@
 
             html += `
                 <div class="mb-5 first:mt-0">
-                    <h3 class="text-[10px] font-black tracking-widest text-black uppercase sticky top-0 bg-gray-100 py-2 border-b-2 border-t-2 border-black z-10 px-2 -mx-2">${cat}</h3>
+                    <h3 class="text-[10px] font-black tracking-widest text-black uppercase sticky top-0 py-2 border-b-2 border-t-2 border-black z-10 px-2 -mx-2 bg-white/40 backdrop-blur-md">${cat}</h3>
                     <div class="flex flex-col mt-2">
             `;
 
             html += foodsInCat.map(f => `
-                <label class="flex items-center gap-4 py-2.5 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors rounded px-2 -mx-2">
+                <label class="flex items-center gap-4 py-2.5 border-b border-black/10 cursor-pointer hover:bg-black/5 transition-colors rounded px-2 -mx-2">
                     <input type="checkbox" id="chk-${f.id}" class="custom-chk flex-shrink-0" ${savedFoods.includes(f.id) ? 'checked' : ''} onchange="autoSave()">
                     <div class="flex-grow flex justify-between items-center text-sm">
                         <span class="font-bold text-gray-900">${f.name}</span>
-                        <span class="mono-font text-xs text-gray-600">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1 text-gray-300">|</span> <span class="text-black font-bold">${f.p}g</span></span>
+                        <span class="mono-font text-xs text-gray-700">${f.kcal} <span class="text-[10px]">kcal</span> <span class="mx-1 text-black">|</span> <span class="text-black font-bold">${f.p}g</span></span>
                     </div>
                 </label>
             `).join('');
@@ -327,25 +374,40 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-3 sm:gap-0">
                     <span class="mono-font text-sm font-bold text-black w-full sm:w-1/4">Treadmill/Mix</span>
                     <div class="grid grid-cols-4 gap-2 w-full sm:w-3/4 sm:flex sm:justify-end">
-                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
-                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-incline" placeholder="Inc" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.cardio?.incline || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-speed" placeholder="Spd" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.cardio?.speed || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-minutes" placeholder="Mins" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.cardio?.minutes || ''}" oninput="autoSave()">
+                        <input type="number" id="cardio-kcal" placeholder="Kcal" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.cardio?.kcal || ''}" oninput="autoSave()">
                     </div>
                 </div>
             `;
         } else {
             const exercises = WORKOUT_DB[split];
-            document.getElementById('exercise-list').innerHTML = exercises.map(ex => `
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-3 sm:gap-0">
-                    <span class="mono-font text-sm font-bold text-black truncate pr-2 w-full sm:w-auto">${ex}</span>
-                    <div class="grid grid-cols-3 gap-2 w-full sm:w-auto sm:flex sm:gap-4">
-                        <input type="text" id="${ex}-s1" placeholder="S1" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s2" placeholder="S2" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="autoSave()">
-                        <input type="text" id="${ex}-s3" placeholder="S3" class="w-full sm:w-16 h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="autoSave()">
+            document.getElementById('exercise-list').innerHTML = exercises.map(ex => {
+                const prevSets = getPreviousWorkoutData(ex, date);
+                
+                return `
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-gray-200 pb-4 gap-3 sm:gap-0">
+                    <span class="mono-font text-sm font-bold text-black truncate pr-2 w-full sm:w-auto pb-1">${ex}</span>
+                    <div class="flex gap-2 w-full sm:w-auto sm:gap-4">
+                        <div class="flex flex-col flex-1 sm:w-16">
+                            <span class="text-[9px] text-gray-500 text-center font-bold mono-font mb-1 truncate">${prevSets.s1 ? `Last: ${prevSets.s1}` : '&nbsp;'}</span>
+                            <input type="text" id="${ex}-s1" data-prev="${prevSets.s1}" placeholder="S1" class="set-input w-full h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.sets[`${ex}-s1`] || ''}" oninput="colorCodeInput(this); autoSave()">
+                        </div>
+                        <div class="flex flex-col flex-1 sm:w-16">
+                            <span class="text-[9px] text-gray-500 text-center font-bold mono-font mb-1 truncate">${prevSets.s2 ? `Last: ${prevSets.s2}` : '&nbsp;'}</span>
+                            <input type="text" id="${ex}-s2" data-prev="${prevSets.s2}" placeholder="S2" class="set-input w-full h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.sets[`${ex}-s2`] || ''}" oninput="colorCodeInput(this); autoSave()">
+                        </div>
+                        <div class="flex flex-col flex-1 sm:w-16">
+                            <span class="text-[9px] text-gray-500 text-center font-bold mono-font mb-1 truncate">${prevSets.s3 ? `Last: ${prevSets.s3}` : '&nbsp;'}</span>
+                            <input type="text" id="${ex}-s3" data-prev="${prevSets.s3}" placeholder="S3" class="set-input w-full h-8 bg-gray-50 border-2 border-black text-center text-black text-sm mono-font placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-colors" value="${dayData.sets[`${ex}-s3`] || ''}" oninput="colorCodeInput(this); autoSave()">
+                        </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
+            
+            // Apply colors on render
+            document.querySelectorAll('.set-input').forEach(input => colorCodeInput(input));
         }
         updateMetrics(); 
     }
@@ -443,6 +505,20 @@
                 totalProtein += f.p;
             }
         });
+
+        // Update Nutrition Panel Background based on Protein
+        const nutritionPanel = document.getElementById('nutrition-panel');
+        nutritionPanel.classList.remove('bg-white', 'bg-red-100', 'bg-yellow-100', 'bg-green-100');
+        
+        if (totalProtein === 0) {
+            nutritionPanel.classList.add('bg-white');
+        } else if (totalProtein < 70) {
+            nutritionPanel.classList.add('bg-red-100');
+        } else if (totalProtein < 90) {
+            nutritionPanel.classList.add('bg-yellow-100');
+        } else {
+            nutritionPanel.classList.add('bg-green-100');
+        }
 
         document.getElementById('metrics-log').innerHTML = `
             <div class="flex flex-row justify-between items-center h-full">
