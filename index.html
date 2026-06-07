@@ -40,99 +40,111 @@
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center overflow-x-hidden">
     
     <div class="w-full max-w-[1400px]">
-        <!-- HEADER -->
+        <!-- GLOBAL HEADER -->
         <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end border-b-4 pb-6 mb-6 md:mb-8 border-black gap-6 lg:gap-0">
             <div class="w-full lg:w-auto">
                 <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 title-font bg-gradient-to-r from-black to-gray-600 bg-clip-text text-transparent">Health Tracker</h1>
                 <p class="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.3em] text-gray-500 font-bold uppercase">Body Composition & Performance Analytics</p>
             </div>
             
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 w-full lg:w-auto">
+                <!-- Database Status -->
+                <div class="border-2 border-black px-3 py-1.5 bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] w-full sm:w-auto flex justify-between sm:block">
+                    <span class="mono-font text-[10px] font-bold tracking-widest text-gray-500 mr-2">SYS.DB:</span>
+                    <span id="db-status-badge" class="mono-font text-[10px] font-black uppercase tracking-widest text-orange-500">Connecting...</span>
+                </div>
+
                 <!-- Navigation Tabs -->
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <button id="btn-daily" onclick="switchTab('daily')" class="flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold transition-colors">Daily Log</button>
+                    <button id="btn-daily" onclick="switchTab('daily')" class="flex-1 sm:flex-none tab-active px-4 md:px-6 py-2 text-sm font-bold transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)]">Daily Log</button>
                     <button id="btn-analytics" onclick="switchTab('analytics')" class="flex-1 sm:flex-none tab-inactive px-4 md:px-6 py-2 text-sm font-bold hover:text-black hover:bg-gray-300 transition-colors">Analytics</button>
                 </div>
-                
-                <input type="date" id="date-picker" style="color-scheme: light;" class="w-full sm:w-auto bg-white border-4 border-black p-2 text-sm font-bold mono-font text-black uppercase outline-none focus:border-blue-600 cursor-pointer shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
         </header>
 
         <!-- MAIN CONTENT: DAILY LOG -->
-        <div id="view-daily" class="flex flex-col lg:grid lg:grid-cols-12 gap-6">
+        <div id="view-daily" class="flex flex-col w-full">
             
-            <!-- LEFT COLUMN (Nutrition & Hydration) -->
-            <div class="lg:col-span-5 flex flex-col gap-6 w-full">
-                <!-- Food List Panel -->
-                <div id="nutrition-panel" class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-colors duration-500">
-                    <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 pb-2 border-b-2 border-black shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
-                        <span class="text-gray-500">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse">_</span>
-                    </h2>
-                    
-                    <!-- Categorized Food List Wrapper -->
-                    <div id="food-list" class="flex flex-col gap-2 overflow-y-auto pr-2 flex-grow min-h-0 relative"></div>
-                </div>
-
-                <!-- Manual Entries Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-green-700 uppercase mb-2">&gt;&nbsp;SYS.WEIGHT</p>
-                        <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
-                    </div>
-                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-blue-700 uppercase mb-2">&gt;&nbsp;HYDRATION</p>
-                        <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
-                    </div>
-                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-red-600 uppercase mb-2">&gt;&nbsp;JUNK_KCAL</p>
-                        <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
-                    </div>
-                    <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-purple-600 uppercase mb-2">&gt;&nbsp;JUNK_PRO</p>
-                        <input type="number" id="junk-protein" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
-                    </div>
-                </div>
-                
-                <!-- Left Metrics Bottom -->
-                <div id="metrics-log" class="border-4 border-black bg-gray-100 p-4 h-auto md:h-24 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+            <!-- Daily View Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-black pb-4 mb-6 gap-4 sm:gap-0">
+                <h2 class="text-xl md:text-2xl font-black tracking-tight title-font uppercase">Current Entry</h2>
+                <input type="date" id="date-picker" style="color-scheme: light;" class="w-full sm:w-auto bg-white border-4 border-black p-2 text-sm font-bold mono-font text-black uppercase outline-none focus:border-blue-600 cursor-pointer shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
-            <!-- RIGHT COLUMN (Workout & Steps) -->
-            <div class="lg:col-span-7 flex flex-col gap-6 w-full">
-                <!-- Workout Panel -->
-                <div class="border-4 border-black bg-white p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b-2 border-black pb-4 md:pb-6 gap-4 sm:gap-0 shrink-0">
-                        <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mt-1 break-all whitespace-nowrap overflow-hidden text-ellipsis">
-                            <span class="text-gray-500">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse">_</span>
+            <div class="flex flex-col lg:grid lg:grid-cols-12 gap-6">
+                <!-- LEFT COLUMN (Nutrition & Hydration) -->
+                <div class="lg:col-span-5 flex flex-col gap-6 w-full">
+                    <!-- Food List Panel -->
+                    <div id="nutrition-panel" class="border-4 border-black bg-white p-4 md:p-6 h-[400px] md:h-[500px] flex flex-col shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-colors duration-500">
+                        <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mb-4 pb-2 border-b-2 border-black shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                            <span class="text-gray-500">root@sys:~#</span> ./compile_nutrition.sh<span class="animate-pulse">_</span>
                         </h2>
-                        <div class="relative w-full sm:w-auto">
-                            <select id="split-selector" class="w-full sm:w-auto appearance-none bg-white border-2 border-black text-black font-bold px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-gray-100" onchange="renderExercises()">
-                                <option value="Chest">Chest</option>
-                                <option value="Abs">Abs</option>
-                                <option value="Biceps">Biceps</option>
-                                <option value="Triceps">Triceps</option>
-                                <option value="Back">Back</option>
-                                <option value="Shoulder">Shoulder</option>
-                                <option value="Leg">Leg</option>
-                                <option value="Cardio">Cardio</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                            </div>
-                        </div>
+                        
+                        <!-- Categorized Food List Wrapper -->
+                        <div id="food-list" class="flex flex-col gap-2 overflow-y-auto pr-2 flex-grow min-h-0 relative"></div>
                     </div>
 
-                    <div id="exercise-list" class="flex flex-col gap-6 flex-grow overflow-y-auto min-h-0 pr-2"></div>
-                </div>
-                
-                <!-- Bottom Row: Steps and Activity Log -->
-                <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full">
-                    <div class="border-4 border-black bg-white p-4 h-24 w-full sm:w-1/3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
-                        <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-orange-600 uppercase mb-1">&gt;&nbsp;SYS.STEPS</p>
-                        <input type="number" id="steps-in" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-black text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                    <!-- Manual Entries Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                        <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                            <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-green-700 uppercase mb-2">&gt;&nbsp;SYS.WEIGHT</p>
+                            <input type="number" id="weight-in" step="0.1" placeholder="kg" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                        </div>
+                        <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                            <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-blue-700 uppercase mb-2">&gt;&nbsp;HYDRATION</p>
+                            <input type="number" id="water-in" step="0.1" placeholder="L" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                        </div>
+                        <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                            <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-red-600 uppercase mb-2">&gt;&nbsp;JUNK_KCAL</p>
+                            <input type="number" id="junk-kcal" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                        </div>
+                        <div class="border-4 border-black bg-white p-3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                            <p class="mono-font text-[10px] font-bold tracking-[0.1em] text-purple-600 uppercase mb-2">&gt;&nbsp;JUNK_PRO</p>
+                            <input type="number" id="junk-protein" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-center text-black text-lg font-black mono-font py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                        </div>
                     </div>
-                    <div id="activity-log" class="border-4 border-dashed border-black bg-gray-100 p-4 h-24 w-full sm:w-2/3 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+                    
+                    <!-- Left Metrics Bottom -->
+                    <div id="metrics-log" class="border-4 border-black bg-gray-100 p-4 h-auto md:h-24 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+                </div>
+
+                <!-- RIGHT COLUMN (Workout & Steps) -->
+                <div class="lg:col-span-7 flex flex-col gap-6 w-full">
+                    <!-- Workout Panel -->
+                    <div class="border-4 border-black bg-white p-4 md:p-8 flex flex-col min-h-[500px] md:min-h-[630px] relative shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                        
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b-2 border-black pb-4 md:pb-6 gap-4 sm:gap-0 shrink-0">
+                            <h2 class="text-xs md:text-sm font-bold tracking-widest mono-font text-black mt-1 break-all whitespace-nowrap overflow-hidden text-ellipsis">
+                                <span class="text-gray-500">root@sys:~#</span> ./exec_protocol.sh<span class="animate-pulse">_</span>
+                            </h2>
+                            <div class="relative w-full sm:w-auto">
+                                <select id="split-selector" class="w-full sm:w-auto appearance-none bg-white border-2 border-black text-black font-bold px-4 py-2 pr-10 font-mono text-sm outline-none cursor-pointer hover:bg-gray-100" onchange="renderExercises()">
+                                    <option value="Chest">Chest</option>
+                                    <option value="Abs">Abs</option>
+                                    <option value="Biceps">Biceps</option>
+                                    <option value="Triceps">Triceps</option>
+                                    <option value="Back">Back</option>
+                                    <option value="Shoulder">Shoulder</option>
+                                    <option value="Leg">Leg</option>
+                                    <option value="Cardio">Cardio</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="exercise-list" class="flex flex-col gap-6 flex-grow overflow-y-auto min-h-0 pr-2"></div>
+                    </div>
+                    
+                    <!-- Bottom Row: Steps and Activity Log -->
+                    <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full">
+                        <div class="border-4 border-black bg-white p-4 h-24 w-full sm:w-1/3 flex flex-col justify-between shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                            <p class="mono-font text-[10px] font-bold tracking-[0.2em] text-orange-600 uppercase mb-1">&gt;&nbsp;SYS.STEPS</p>
+                            <input type="number" id="steps-in" placeholder="0" class="w-full bg-gray-50 border-2 border-black text-black text-xl font-black mono-font px-2 py-1 focus:outline-none focus:border-blue-600" oninput="autoSave()">
+                        </div>
+                        <div id="activity-log" class="border-4 border-dashed border-black bg-gray-100 p-4 h-24 w-full sm:w-2/3 shadow-[4px_4px_0px_rgba(0,0,0,1)]"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,28 +153,43 @@
         <div id="view-analytics" class="hidden flex-col gap-6 w-full">
             
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 gap-4 sm:gap-0">
-                <p class="text-xs tracking-widest uppercase font-bold text-gray-600">Database Status: <span id="db-status-badge" class="text-orange-500">Loading Cloud Data...</span></p>
-                <button class="w-full sm:w-auto bg-gray-100 border-2 border-gray-300 text-gray-500 text-xs font-bold uppercase tracking-wider px-4 py-2 cursor-not-allowed">Auto-Fetching...</button>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-energy"></canvas></div>
-                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-protein"></canvas></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-water"></canvas></div>
-                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full"><canvas id="chart-steps"></canvas></div>
-            </div>
-
-            <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full mb-8">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-black pb-4 gap-4 sm:gap-0">
-                    <h3 class="mono-font text-xs md:text-sm font-bold tracking-widest uppercase text-black break-all">&gt;&nbsp;STRENGTH_PROGRESSION_LOG</h3>
-                    <select id="analytics-exercise-selector" class="w-full sm:w-auto bg-white border-2 border-black text-black font-bold px-2 py-1 font-mono text-xs outline-none cursor-pointer" onchange="renderWorkoutChart()">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+                    <p class="mono-font font-bold text-xs uppercase tracking-widest text-gray-500 hidden sm:block">Date Range:</p>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="date" id="analytics-start" class="w-full sm:w-auto bg-gray-50 border-2 border-black px-2 py-1 text-sm font-bold mono-font text-black outline-none focus:border-blue-600" onchange="generateCharts()">
+                        <span class="font-bold mono-font text-xs text-gray-500">→</</span>
+                        <input type="date" id="analytics-end" class="w-full sm:w-auto bg-gray-50 border-2 border-black px-2 py-1 text-sm font-bold mono-font text-black outline-none focus:border-blue-600" onchange="generateCharts()">
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                    <h3 class="mono-font text-xs md:text-sm font-bold tracking-widest uppercase text-black break-all">&gt;&nbsp;STRENGTH_LOG:</h3>
+                    <select id="analytics-exercise-selector" class="w-auto bg-gray-100 border-2 border-black text-black font-bold px-2 py-1 font-mono text-xs outline-none cursor-pointer" onchange="renderWorkoutChart()">
                         <!-- Options populated by JS -->
                     </select>
                 </div>
-                <div class="h-[250px] md:h-[300px] w-full relative"><canvas id="chart-workout"></canvas></div>
+            </div>
+
+            <!-- Full Width Stacked Charts -->
+            <div class="flex flex-col gap-6 w-full pb-12">
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full">
+                    <div class="h-[300px] md:h-[400px] w-full relative"><canvas id="chart-energy"></canvas></div>
+                </div>
+                
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full">
+                    <div class="h-[300px] md:h-[400px] w-full relative"><canvas id="chart-protein"></canvas></div>
+                </div>
+
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full">
+                    <div class="h-[300px] md:h-[400px] w-full relative"><canvas id="chart-water"></canvas></div>
+                </div>
+
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full">
+                    <div class="h-[300px] md:h-[400px] w-full relative"><canvas id="chart-steps"></canvas></div>
+                </div>
+
+                <div class="border-4 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] p-4 md:p-6 w-full mb-8">
+                    <div class="h-[300px] md:h-[400px] w-full relative"><canvas id="chart-workout"></canvas></div>
+                </div>
             </div>
 
         </div>
@@ -308,29 +335,38 @@
             }
         });
 
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date-picker').value = today;
+        // Set default dates
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        
+        const lastWeek = new Date(today);
+        lastWeek.setDate(lastWeek.getDate() - 13); // Default 14 day view inclusive
+        const lastWeekStr = `${lastWeek.getFullYear()}-${String(lastWeek.getMonth() + 1).padStart(2, '0')}-${String(lastWeek.getDate()).padStart(2, '0')}`;
+
+        document.getElementById('date-picker').value = todayStr;
+        document.getElementById('analytics-start').value = lastWeekStr;
+        document.getElementById('analytics-end').value = todayStr;
+
         document.getElementById('date-picker').onchange = (e) => {
             loadData(e.target.value);
-            if(activeTab === 'analytics') generateCharts();
         };
 
         try {
             const response = await fetch(`${API_URL}/logs`);
             if (response.ok) {
                 storage = await response.json();
-                document.getElementById('db-status-badge').innerText = "Connected to MongoDB";
-                document.getElementById('db-status-badge').className = "text-green-600 font-black";
+                document.getElementById('db-status-badge').innerText = "Connected";
+                document.getElementById('db-status-badge').className = "mono-font text-[10px] font-black uppercase tracking-widest text-green-600";
             } else {
                 throw new Error("API responded but not OK");
             }
         } catch (err) {
             console.warn("Could not reach DB API. Operating in memory-only mode.", err);
-            document.getElementById('db-status-badge').innerText = "Offline (In-Memory)";
-            document.getElementById('db-status-badge').className = "text-red-600 font-black";
+            document.getElementById('db-status-badge').innerText = "Offline";
+            document.getElementById('db-status-badge').className = "mono-font text-[10px] font-black uppercase tracking-widest text-red-600";
         }
 
-        loadData(today);
+        loadData(todayStr);
     }
 
     // RENDER CATEGORIZED FOODS
@@ -449,8 +485,8 @@
         
         const badge = document.getElementById('db-status-badge');
         if(badge) {
-            badge.innerText = "Typing...";
-            badge.className = "text-yellow-600 font-bold";
+            badge.innerText = "Syncing...";
+            badge.className = "mono-font text-[10px] font-black uppercase tracking-widest text-yellow-600";
         }
 
         syncTimeout = setTimeout(() => {
@@ -463,11 +499,6 @@
         const date = document.getElementById('date-picker').value;
         const badge = document.getElementById('db-status-badge');
         
-        if(badge) {
-            badge.innerText = 'Syncing to Cloud...';
-            badge.className = 'text-blue-600 font-bold';
-        }
-        
         try {
             const response = await fetch(`${API_URL}/log`, {
                 method: 'POST',
@@ -477,8 +508,8 @@
 
             if (response.ok) {
                 if(badge) {
-                    badge.innerText = 'All changes saved ✓';
-                    badge.className = 'text-green-600 font-black';
+                    badge.innerText = 'Connected';
+                    badge.className = 'mono-font text-[10px] font-black uppercase tracking-widest text-green-600';
                 }
             } else {
                 throw new Error('Sync returned non-200 status');
@@ -486,8 +517,8 @@
         } catch (error) {
             console.error("Auto-sync failed:", error);
             if(badge) {
-                badge.innerText = 'Sync Failed ❌';
-                badge.className = 'text-red-600 font-black';
+                badge.innerText = 'Sync Failed';
+                badge.className = 'mono-font text-[10px] font-black uppercase tracking-widest text-red-600';
             }
         }
     }
@@ -540,7 +571,7 @@
         let stepsCount = parseInt(document.getElementById('steps-in').value) || 0;
         let stepBurn = stepsCount * 0.04; 
 
-        // Dynamic BMR Calculation via Mifflin-St Jeor Equation - Default fallback weight updated to 67kg
+        // Dynamic BMR Calculation via Mifflin-St Jeor Equation
         let currentWeight = parseFloat(document.getElementById('weight-in').value);
         if (isNaN(currentWeight) || currentWeight === 0) currentWeight = 67; 
         
@@ -582,15 +613,15 @@
             document.getElementById('view-analytics').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('flex');
             
-            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors';
-            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)]';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors shadow-none';
         } else {
             document.getElementById('view-daily').classList.add('hidden');
             document.getElementById('view-analytics').classList.remove('hidden');
             document.getElementById('view-analytics').classList.add('flex');
             
-            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors';
-            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors';
+            document.getElementById('btn-analytics').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-black bg-black text-white transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)]';
+            document.getElementById('btn-daily').className = 'flex-1 sm:flex-none px-4 md:px-6 py-2 text-sm font-bold border-2 border-transparent bg-gray-200 text-gray-600 hover:text-black hover:bg-gray-300 transition-colors shadow-none';
             
             generateCharts();
         }
@@ -606,17 +637,27 @@
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
         Chart.defaults.maintainAspectRatio = false; 
 
-        const selectedDateStr = document.getElementById('date-picker').value;
-        const parts = selectedDateStr.split('-');
-        const baseDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        const startInput = document.getElementById('analytics-start').value;
+        const endInput = document.getElementById('analytics-end').value;
+        
+        if (!startInput || !endInput) return;
+
+        const sParts = startInput.split('-');
+        const eParts = endInput.split('-');
+        const startDate = new Date(sParts[0], sParts[1] - 1, sParts[2]);
+        const endDate = new Date(eParts[0], eParts[1] - 1, eParts[2]);
+
+        if(startDate > endDate) {
+            alert("Start date must be before end date.");
+            return;
+        }
 
         const dates = [];
         const kcalIn = [], kcalOut = [];
         const waterData = [], stepsData = [], proteinData = [];
+        const energyBgIn = [], energyBgOut = [];
 
-        for(let i=6; i>=0; i--) {
-            const d = new Date(baseDate);
-            d.setDate(d.getDate() - i);
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
             const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             dates.push(`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`); 
 
@@ -637,38 +678,60 @@
             let cardioBurn = parseInt(dayData.cardio?.kcal) || 0;
             let stepCount = parseInt(dayData.steps) || 0;
             
-            // Reconstruct historical BMR - Base weight 67kg
+            // Reconstruct historical BMR
             let dayWeight = parseFloat(dayData.weight) || parseFloat(getRecentWeight(dateStr)) || 67;
             let bmr = Math.round((10 * dayWeight) + (6.25 * USER_HEIGHT_CM) - (5 * USER_AGE) + 5);
-            kcalOut.push(Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04)));
+            let kOut = Math.round(bmr + (workoutActive ? 350 : 0) + cardioBurn + (stepCount * 0.04));
+            kcalOut.push(kOut);
+
+            // Dynamic Energy Chart Colors
+            if (kOut > kIn) {
+                // Caloric Deficit
+                energyBgIn.push('#fca5a5');  // Light Red
+                energyBgOut.push('#ef4444'); // Bold Red
+            } else if (kIn > kOut) {
+                // Caloric Surplus
+                energyBgIn.push('#22c55e');  // Bold Green
+                energyBgOut.push('#86efac'); // Light Green
+            } else {
+                energyBgIn.push('#d1d5db');
+                energyBgOut.push('#111827');
+            }
 
             waterData.push(parseFloat(dayData.water) || 0);
             stepsData.push(stepCount);
         }
 
-        const gridOptions = { grid: { color: '#e5e7eb' } }; // Light gray grid lines
+        const gridOptions = { grid: { color: '#e5e7eb' } };
 
         charts.energy = new Chart(document.getElementById('chart-energy'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Kcal In', data: kcalIn, backgroundColor: '#d1d5db' }, { label: 'Kcal Out', data: kcalOut, backgroundColor: '#111827' }, { label: 'Threshold (2500)', data: Array(7).fill(2500), type: 'line', borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            data: { 
+                labels: dates, 
+                datasets: [
+                    { label: 'Kcal In', data: kcalIn, backgroundColor: energyBgIn }, 
+                    { label: 'Kcal Out', data: kcalOut, backgroundColor: energyBgOut }, 
+                    { label: 'Threshold (2500)', data: Array(dates.length).fill(2500), type: 'line', borderColor: '#000000', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }
+                ] 
+            },
             options: { plugins: { title: { display: true, text: 'Energy Balance (Kcal)' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.protein = new Chart(document.getElementById('chart-protein'), { 
             type: 'line', 
-            data: { labels: dates, datasets: [{ label: 'Protein (g)', data: proteinData, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }, { label: 'Goal (90g)', data: Array(7).fill(90), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            data: { labels: dates, datasets: [{ label: 'Protein (g)', data: proteinData, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }, { label: 'Goal (90g)', data: Array(dates.length).fill(90), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
             options: { plugins: { title: { display: true, text: 'Daily Protein Intake' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.water = new Chart(document.getElementById('chart-water'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Water (Liters)', data: waterData, backgroundColor: '#0ea5e9' }, { label: 'Goal (3L)', data: Array(7).fill(3), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            data: { labels: dates, datasets: [{ label: 'Water (Liters)', data: waterData, backgroundColor: '#0ea5e9' }, { label: 'Goal (3L)', data: Array(dates.length).fill(3), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
             options: { plugins: { title: { display: true, text: 'Hydration Tracker' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
         charts.steps = new Chart(document.getElementById('chart-steps'), { 
             type: 'bar', 
-            data: { labels: dates, datasets: [{ label: 'Steps', data: stepsData, backgroundColor: '#f59e0b' }, { label: 'Goal (6000)', data: Array(7).fill(6000), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
+            data: { labels: dates, datasets: [{ label: 'Steps', data: stepsData, backgroundColor: '#f59e0b' }, { label: 'Goal (6000)', data: Array(dates.length).fill(6000), type: 'line', borderColor: '#22c55e', borderDash: [5, 5], pointRadius: 0, borderWidth: 2 }] },
             options: { plugins: { title: { display: true, text: 'Step Count' } }, scales: { y: gridOptions, x: gridOptions } }
         });
 
@@ -679,16 +742,20 @@
         if(charts.workout) charts.workout.destroy();
         
         const selectedEx = document.getElementById('analytics-exercise-selector').value;
-        const selectedDateStr = document.getElementById('date-picker').value;
-        const parts = selectedDateStr.split('-');
-        const baseDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        const startInput = document.getElementById('analytics-start').value;
+        const endInput = document.getElementById('analytics-end').value;
+        
+        if (!startInput || !endInput) return;
+
+        const sParts = startInput.split('-');
+        const eParts = endInput.split('-');
+        const startDate = new Date(sParts[0], sParts[1] - 1, sParts[2]);
+        const endDate = new Date(eParts[0], eParts[1] - 1, eParts[2]);
 
         const dates = [];
         const s1Data = [], s2Data = [], s3Data = [];
 
-        for(let i=13; i>=0; i--) {
-            const d = new Date(baseDate);
-            d.setDate(d.getDate() - i);
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
             const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             dates.push(`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`); 
 
